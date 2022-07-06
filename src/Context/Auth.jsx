@@ -6,12 +6,9 @@ import axios from "axios";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
-  const URL = "https://localhost:5000";
+  const URL = "http://localhost:5000";
 
   const [user, setUser] = useState({});
-  const [hashtags, setHashtags] = useState()
-  const [ trendingUpdate, setTrendingUpdate] = useState(false)
-  const [ hashtagsUpdated, setHashtagsUpdated ] = useState(false)
 
   const navigate = useNavigate();
 
@@ -21,14 +18,14 @@ function AuthProvider({ children }) {
       setDisabled(false);
       return
     }
-    const promise = axios.post(URL+"/signin", data);
+    const promise = axios.post(URL+"/login", data);
     promise.then((response) => {
       setDisabled(false);
       setUser({
         ...response.data,
       });
       localStorage.setItem("user", JSON.stringify(response.data));
-      navigate("/timeline");
+      navigate("/home");
     });
     promise.catch((e) => {
       setDisabled(false);
@@ -45,23 +42,6 @@ function AuthProvider({ children }) {
     if(window.confirm("Sessão expirada. Deseja ir para a tela de login?"))navigate("/")
   }
 
-  const getTrending = () => {
-    axios.get(URL + "/hashtag")
-    .then((answer) => {setHashtags(answer.data)})
-    .catch((e) => window.confirm(e.response.data));
-  }
-
-  const deleteHashtag = (id, config) => {
-    axios.delete(URL + `/delete/hashtag/${id}`, config)
-    .then(() => {setTrendingUpdate(!trendingUpdate)})
-    .catch((e) => window.confirm(e.response.data));
-  }
-
-  const updateHashtags = (obj, config) => {
-    axios.post(URL + `/update/hashtag`, obj, config)
-    .then(() => setHashtagsUpdated(true))
-    .catch((e) => window.confirm(e.response.data))
-  }
 
   return (
     <AuthContext.Provider
@@ -69,14 +49,7 @@ function AuthProvider({ children }) {
         user,
         logIn,
         URL,
-        hashtags,
-        getTrending,
-        invalidToken,
-        deleteHashtag,
-        trendingUpdate,
-        setTrendingUpdate,
-        updateHashtags,
-        hashtagsUpdated
+        invalidToken,       
       }}
     >
       {children}

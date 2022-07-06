@@ -4,6 +4,7 @@ import GlobalStyle from "../../Utilities/GlobalStyle.jsx"
 import AuthProvider from "../../Context/Auth.jsx";
 import Login from "../Login/index.jsx";
 import Signup from "../Signup/index.jsx";
+import Home from "../Home/index.jsx";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <GlobalStyle />
         <Routes>
         <Route path="/" element={<Login />}></Route>
-        <Route path="/sign-up" element={<Signup />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/home" element={<Home />}></Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
