@@ -4,7 +4,7 @@ import axios from "axios";
 
 import Header from "../../Components/Header";
 import { PageContainer } from "../../Utils/Styles";
-// import Subjects from "../../Components/Subjects";
+import Folders from "../../Components/Folders";
 import { AuthContext } from "../../Context/Auth";
 
 export default function Home() {
@@ -15,9 +15,9 @@ export default function Home() {
     <PageContainer>
       <Header />
       <HomeSection>
-        {/* <Subjects></Subjects>
-        <Subjects></Subjects>
-        <Subjects></Subjects> */}
+        <Folders></Folders>
+        <Folders></Folders>
+        <Folders></Folders>
       </HomeSection>
     </PageContainer>
   );
@@ -25,7 +25,7 @@ export default function Home() {
 
 const HomeSection = styled.section`
 margin-top: 120px;
-width: 90%;
+width: 95%;
 display:flex;
 justify-content: space-between;
 `;
