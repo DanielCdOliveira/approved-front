@@ -2,14 +2,15 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
-import {TbEdit} from "react-icons/tb"
-import {MdOutlineDelete} from "react-icons/md"
+import { TbEdit } from "react-icons/tb";
+import { MdOutlineDelete } from "react-icons/md";
 
 import Subject from "./Subject.jsx";
 
 export default function Folder({ folder, config }) {
   const [newSubject, setNewSubject] = useState("");
-  const [ShowSubjects, setShowSubjects] = useState(false);
+  const [showSubjects, setShowSubjects] = useState(false);
+  const [inputFolder, setInputFolder] = useState(false);
   console.log(folder);
 
   function createNewSubject(e) {
@@ -24,26 +25,43 @@ export default function Folder({ folder, config }) {
       });
   }
 
+  function editFolder() {
+    if (!showSubjects) {
+      setShowSubjects(true);
+    }
+    setInputFolder(!inputFolder);
+  }
+  function openSubjects() {
+    if (inputFolder) {
+      setInputFolder(!inputFolder);
+    }
+    setShowSubjects(!showSubjects);
+  }
+
   return (
     <FolderContainer>
       <FolderItem>
         <h2
           onClick={() => {
-            setShowSubjects(!ShowSubjects);
+            openSubjects();
           }}
         >
           {folder.name}
         </h2>
         <div>
-        <TbEdit className="edit-folder"/>
-        <MdOutlineDelete className="delete-folder"/>
-        
+          <TbEdit
+            className="edit-folder"
+            onClick={() => {
+              editFolder();
+            }}
+          />
+          <MdOutlineDelete className="delete-folder" />
         </div>
       </FolderItem>
-      {ShowSubjects ? (
-        <SubjectsList>
-          <div>  
-            {/* <SubjectForm onSubmit={createNewSubject}>
+
+      <SubjectsList showSubjects={showSubjects}>
+        <div>
+          <SubjectForm onSubmit={createNewSubject} inputFolder={inputFolder}>
             <input
               type="text"
               name=""
@@ -56,22 +74,18 @@ export default function Folder({ folder, config }) {
             <button className="add-button" type="submit">
               <BiPlusCircle />
             </button>
-          </SubjectForm> */}
+          </SubjectForm>
           <div>
             {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
                 <Subject subject={subject} config={config} />
               ))
             ) : (
-              <h1>dadsada</h1>
+              <></>
             )}
           </div>
-          </div>
-        
-        </SubjectsList>
-      ) : (
-        <></>
-      )}
+        </div>
+      </SubjectsList>
     </FolderContainer>
   );
 }
@@ -79,7 +93,6 @@ const FolderContainer = styled.li`
   width: 100%;
   height: fit-content;
   margin-bottom: 8px;
-  /* background-color: springgreen; */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -89,42 +102,45 @@ const FolderItem = styled.div`
   width: 100%;
   height: 50px;
   position: relative;
-   background-color: #280068;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   h2 {
     font-size: 30px;
     line-height: 48px;
     font-weight: 600;
     cursor: pointer;
   }
-  .edit-folder{
+  .edit-folder {
     font-size: 30px;
     margin-right: 10px;
+    cursor: pointer;
   }
-  .delete-folder{
+  .delete-folder {
     font-size: 30px;
     color: #af2727;
+    cursor: pointer;
   }
 `;
 const SubjectsList = styled.div`
   width: 95%;
-  height: auto;
   display: flex;
-  /* background-color: blueviolet; */
+  overflow-y: hidden;
+  ${(props) => (props.showSubjects ? "height:auto;" : "height:0px;")};
   display: flex;
   flex-direction: column;
-  /* align-items: flex-end; */
+  transition: all 5s;
 `;
 
 const SubjectForm = styled.div`
   width: 100%;
-  height: 50px;
   text-align: center;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow-y: hidden;
+  transition: all 0.3s;
+  ${(props) => (props.inputFolder ? "height:50px" : "height:0px")};
   input {
     height: 80%;
     width: 100%;
@@ -140,7 +156,6 @@ const SubjectForm = styled.div`
     font-style: italic;
   }
   .add-button {
-    font-family: "Oswald", sans-serif;
     width: 20%;
     height: 80%;
     background-color: #3d3d3d;

@@ -67,7 +67,7 @@ export default function Folders() {
         {folders.length > 0 ? (
           folders.map((folder) => <Folder folder={folder} config={config} />)
         ) : (
-          <h1></h1>
+          <></>
         )}
       </FolderList>
     </FolderSection>
@@ -85,7 +85,7 @@ const FolderSection = styled.section`
   border-radius: 16px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
   border: solid 1px #383d3f;
-  color: #fff
+  color: #fff;
 `;
 const TitleContainer = styled.div`
   width: 90%;
