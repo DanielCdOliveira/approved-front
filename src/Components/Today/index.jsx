@@ -3,11 +3,9 @@ import styled from "styled-components";
 import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
+import {FaPlus} from "react-icons/fa"
 
-
-import Folder from "./Folder.jsx";
-
-export default function Folders() {
+export default function Today() {
   const [newFolder, setNewFolder] = useState("");
   const { URL } = useContext(AuthContext);
   const [folders, setFolders] = useState([]);
@@ -47,9 +45,10 @@ export default function Folders() {
   return (
     <FolderSection>
       <TitleContainer>
-        <h1>Pastas</h1>
+        <h1>Segunda-Feira</h1>
+        <h2>09/08/2022</h2>
       </TitleContainer>
-      <FolderForm onSubmit={createNewSubject}>
+      {/* <FolderForm onSubmit={createNewSubject}>
         <input
           type="text"
           name=""
@@ -62,21 +61,25 @@ export default function Folders() {
         <button className="add-button" type="submit">
           <BiPlusCircle />
         </button>
-      </FolderForm>
+      </FolderForm> */}
       <FolderList>
-        {folders.length > 0 ? (
+        {/* {folders.length > 0 ? (
           folders.map((folder) => <Folder folder={folder} config={config} />)
         ) : (
           <></>
-        )}
+        )} */}
       </FolderList>
+        <StudyButton>
+          <h3>Adicionar estudo</h3>
+          <FaPlus/>
+        </StudyButton>
     </FolderSection>
   );
 }
 
 const FolderSection = styled.section`
-  width: 30%;
-  height: 80vh;
+  width: 35%;
+  height: 85vh;
   background-color: #171717;
   display: flex;
   flex-direction: column;
@@ -86,15 +89,24 @@ const FolderSection = styled.section`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
   border: solid 1px #383d3f;
   color: #fff;
+  position: relative;
 `;
 const TitleContainer = styled.div`
   width: 90%;
   height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   h1 {
-    font-size: 30px;
+    font-size: 40px;
     font-weight: 700;
-    line-height: 50px;
+    line-height: 60px;
     color: #fff;
+  }
+  h2{
+    font-size: 25px;
+    font-weight: 200;
+    line-height: 45px;
   }
 `;
 const FolderForm = styled.form`
@@ -140,3 +152,22 @@ const FolderList = styled.ul`
   width: 95%;
   height: fit-content;
 `;
+const StudyButton = styled.div`
+  background-color: #333333;
+  border: solid 1px #A3A3A3;
+  width: 80%;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 40px;
+  h3{
+    font-size: 30px;
+    margin-right: 20px;
+  }
+  svg{
+    font-size: 30px;
+  }
+`

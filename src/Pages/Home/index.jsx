@@ -5,6 +5,7 @@ import axios from "axios";
 import Header from "../../Components/Header";
 import { PageContainer } from "../../Utils/Styles";
 import Folders from "../../Components/Folders";
+import Today from "../../Components/Today"
 import { AuthContext } from "../../Context/Auth";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
       <Header />
       <HomeSection>
         <Folders></Folders>
-        <Folders></Folders>
+        <Today></Today>
         <Folders></Folders>
       </HomeSection>
     </PageContainer>
@@ -24,8 +25,9 @@ export default function Home() {
 }
 
 const HomeSection = styled.section`
-margin-top: 120px;
+margin-top: 60px;
 width: 95%;
 display:flex;
 justify-content: space-between;
+align-items: center;
 `;
