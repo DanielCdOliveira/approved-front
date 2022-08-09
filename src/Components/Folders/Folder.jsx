@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
+import {TbEdit} from "react-icons/tb"
+import {MdOutlineDelete} from "react-icons/md"
 
 import Subject from "./Subject.jsx";
 
@@ -32,6 +34,11 @@ export default function Folder({ folder, config }) {
         >
           {folder.name}
         </h2>
+        <div>
+        <TbEdit className="edit-folder"/>
+        <MdOutlineDelete className="delete-folder"/>
+        
+        </div>
       </FolderItem>
       {ShowSubjects ? (
         <SubjectsList>
@@ -81,15 +88,24 @@ const FolderContainer = styled.li`
 const FolderItem = styled.div`
   width: 100%;
   height: 50px;
-  /* background-color: #171717;
-  border-radius: 8px;
-  color: #fff;
-  border: solid 1px #383d3f; */
+  position: relative;
+   background-color: #280068;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
   h2 {
     font-size: 30px;
     line-height: 48px;
     font-weight: 600;
     cursor: pointer;
+  }
+  .edit-folder{
+    font-size: 30px;
+    margin-right: 10px;
+  }
+  .delete-folder{
+    font-size: 30px;
+    color: #af2727;
   }
 `;
 const SubjectsList = styled.div`
