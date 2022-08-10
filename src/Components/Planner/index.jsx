@@ -40,20 +40,6 @@ export default function Planner() {
         </TitleContainer>
         <PlannerList>
         <CreatePlanner create={create} folderId={folderId} folder={folder}/>
-
-
-
-          {/* {week.map((day) => {
-            return (
-              <li>
-                <h1>{day}</h1>
-                <select name="" id="">
-                  <CreatePlanner destruct={destruct} folderId={folderId} />
-                </select>
-                <button>Adicionar Tópico</button>
-              </li>
-            );
-          })} */}
         </PlannerList>
         <Buttons>
           <Button>
