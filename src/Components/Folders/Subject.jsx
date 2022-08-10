@@ -4,6 +4,7 @@ import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
+import { BiListPlus } from "react-icons/bi";
 
 import Topic from "./Topic";
 
@@ -48,7 +49,7 @@ export default function Subject({ subject, config }) {
           {subject.name}
         </h2>
         <div>
-          <TbEdit
+          <BiListPlus
             className="edit-subject"
             onClick={() => {
               editSubject();
@@ -76,8 +77,8 @@ export default function Subject({ subject, config }) {
             </TopicForm>
             <div>
               {subject.topics.length > 0 ? (
-                subject.topics.map((subject) => (
-                  <Topic subject={subject} config={config} />
+                subject.topics.map((topic) => (
+                  <Topic topic={topic} config={config} />
                 ))
               ) : (
                 <></>

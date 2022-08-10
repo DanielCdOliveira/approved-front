@@ -26,7 +26,7 @@ export default function Folder({ folder, config }) {
       });
   }
 
-  function editFolder() {
+  function showInput() {
     if (!showSubjects) {
       setShowSubjects(true);
     }
@@ -56,7 +56,7 @@ export default function Folder({ folder, config }) {
         </div>
         <div>
           <BiListPlus className="plus-folder"  onClick={() => {
-              editFolder();
+              showInput();
             }}/>
           <MdOutlineDelete className="delete-folder" />
         </div>
