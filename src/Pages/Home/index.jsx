@@ -6,6 +6,7 @@ import Header from "../../Components/Header";
 import { PageContainer } from "../../Utils/Styles";
 import Folders from "../../Components/Folders";
 import Today from "../../Components/Today"
+import Historic from "../../Components/Historic";
 import { AuthContext } from "../../Context/Auth";
 
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
       <HomeSection>
         <Folders></Folders>
         <Today></Today>
-        <Folders></Folders>
+        <Historic></Historic>
       </HomeSection>
     </PageContainer>
   );
