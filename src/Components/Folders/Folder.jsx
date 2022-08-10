@@ -5,6 +5,7 @@ import { BiPlusCircle } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 import Subject from "./Subject.jsx";
 
@@ -12,7 +13,7 @@ export default function Folder({ folder, config,URL }) {
   const [newSubject, setNewSubject] = useState("");
   const [showSubjects, setShowSubjects] = useState(false);
   const [inputFolder, setInputFolder] = useState(false);
-  console.log(URL);
+  const navigate = useNavigate()
   
   function createNewSubject(e) {
     console.log("DSaasdasdasdasddsa");
@@ -55,6 +56,7 @@ export default function Folder({ folder, config,URL }) {
           </h2>
           <TbEdit
             className="edit-folder"
+            onClick={()=>{navigate(`../folder/${folder.id}`)}}
           />
         </div>
         <div>
