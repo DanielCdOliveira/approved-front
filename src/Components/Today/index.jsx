@@ -48,31 +48,20 @@ export default function Today() {
         <h1>Segunda-Feira</h1>
         <h2>09/08/2022</h2>
       </TitleContainer>
-      {/* <FolderForm onSubmit={createNewSubject}>
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Criar nova pasta ..."
-          onChange={(e) => {
-            setNewFolder(e.target.value);
-          }}
-        />
-        <button className="add-button" type="submit">
-          <BiPlusCircle />
-        </button>
-      </FolderForm> */}
-      <FolderList>
-        {/* {folders.length > 0 ? (
-          folders.map((folder) => <Folder folder={folder} config={config} />)
-        ) : (
-          <></>
-        )} */}
-      </FolderList>
-        <StudyButton>
+      <TodayList>
+        <StudiesList></StudiesList>
+        <ReviewsList></ReviewsList>
+      </TodayList>
+      <Buttons>
+        <Button>
           <h3>Adicionar estudo</h3>
           <FaPlus/>
-        </StudyButton>
+        </Button>
+        <Button>
+          <h3>Agendar revisão</h3>
+          <FaPlus/>
+        </Button>
+      </Buttons>
     </FolderSection>
   );
 }
@@ -109,62 +98,37 @@ const TitleContainer = styled.div`
     line-height: 45px;
   }
 `;
-const FolderForm = styled.form`
-  width: 95%;
-  height: 50px;
-  text-align: center;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  input {
-    color: #fff;
-    background-color: #242424;
-    height: 80%;
-    width: 80%;
-    font-size: 20px;
-    border: none;
-    outline: none;
-    padding-left: 8px;
-    border-radius: 8px 0 0 8px;
-  }
-  input::placeholder {
-    font-style: italic;
-  }
-  .add-button {
-    font-family: "Oswald", sans-serif;
-    width: 20%;
-    height: 80%;
-    background-color: #A2A2A2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0 8px 8px 0;
-    border: none;
-    cursor: pointer;
-    svg {
-      font-size: 30px;
-      color: #fff;
-    }
-  }
-`;
-const FolderList = styled.ul`
+const TodayList = styled.ul`
   margin-top: 15px;
   width: 95%;
   height: fit-content;
 `;
-const StudyButton = styled.div`
+const StudiesList = styled.ul`
+
+`;const ReviewsList = styled.ul`
+
+`;
+const Buttons = styled.div`
+width: 90%;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 40px;
+`
+const Button = styled.div`
   background-color: #333333;
   border: solid 1px #A3A3A3;
-  width: 80%;
+  width: 48%;
   height: 80px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  bottom: 40px;
   h3{
-    font-size: 30px;
+    font-size: 23px;
     margin-right: 20px;
   }
   svg{
