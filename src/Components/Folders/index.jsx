@@ -31,7 +31,7 @@ export default function Folders() {
   console.log(config);
   console.log(newFolder);
 
-  function createNewSubject(e) {
+  function createNewFolder(e) {
     console.log("entrou");
     e.preventDefault();
     axios
@@ -49,7 +49,7 @@ export default function Folders() {
       <TitleContainer>
         <h1>Pastas</h1>
       </TitleContainer>
-      <FolderForm onSubmit={createNewSubject}>
+      <FolderForm onSubmit={createNewFolder}>
         <input
           type="text"
           name=""
@@ -65,7 +65,7 @@ export default function Folders() {
       </FolderForm>
       <FolderList>
         {folders.length > 0 ? (
-          folders.map((folder) => <Folder folder={folder} config={config} />)
+          folders.map((folder) => <Folder folder={folder} config={config} URL={URL} />)
         ) : (
           <></>
         )}

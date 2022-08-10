@@ -8,16 +8,19 @@ import { BiListPlus } from "react-icons/bi";
 
 import Subject from "./Subject.jsx";
 
-export default function Folder({ folder, config }) {
+export default function Folder({ folder, config,URL }) {
   const [newSubject, setNewSubject] = useState("");
   const [showSubjects, setShowSubjects] = useState(false);
   const [inputFolder, setInputFolder] = useState(false);
-  console.log(folder);
-
+  console.log(URL);
+  
   function createNewSubject(e) {
-    e.preventDefault();
+    console.log("DSaasdasdasdasddsa");
+    const data = {folderId: folder.id,
+    name:newSubject,
+  isDone:false}
     axios
-      .post(URL + "/subject", {}, config)
+      .post(URL + "/subject", data, config)
       .then((e) => {
         console.log(e);
       })
@@ -64,7 +67,7 @@ export default function Folder({ folder, config }) {
 
       <SubjectsList showSubjects={showSubjects}>
         <div>
-          <SubjectForm onSubmit={createNewSubject} inputFolder={inputFolder}>
+          <SubjectForm inputFolder={inputFolder}>
             <input
               type="text"
               name=""
@@ -73,8 +76,9 @@ export default function Folder({ folder, config }) {
               onChange={(e) => {
                 setNewSubject(e.target.value);
               }}
+              value={newSubject}
             />
-            <button className="add-button" type="submit">
+            <button className="add-button" onClick={()=>{createNewSubject()}}>
               <BiPlusCircle />
             </button>
           </SubjectForm>

@@ -1,47 +1,17 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 import {FaPlus} from "react-icons/fa"
 
 export default function Today() {
-  const [newFolder, setNewFolder] = useState("");
   const { URL } = useContext(AuthContext);
-  const [folders, setFolders] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
-  useEffect(() => {
-    axios
-      .get(URL + "/folder", config)
-      .then((e) => {
-        setFolders(e.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
-  console.log(folders);
-  console.log(config);
-  console.log(newFolder);
-
-  function createNewSubject(e) {
-    console.log("entrou");
-    e.preventDefault();
-    axios
-      .post(URL + "/folder", { name: newFolder}, config)
-      .then((e) => {
-        console.log(e);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
   return (
     <FolderSection>
       <TitleContainer>

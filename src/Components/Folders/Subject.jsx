@@ -12,7 +12,6 @@ export default function Subject({ subject, config }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
-  console.log(subject);
 
   function createNewTopic(e) {
     e.preventDefault();

@@ -4,8 +4,6 @@ import axios from "axios";
 import {IoCloseSharp} from "react-icons/io5"
 export default function Topic({ topic, config }) {
   const [ShowTopics, setShowTopics] = useState(false);
-  console.log(topic);
-
   return (
     <TopicContainer>
       <TopicItem>
