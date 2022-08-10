@@ -1,29 +1,35 @@
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../../Context/Auth";
 
-export default function CreatePlanner({ destruct, folderId }) {
+import CreatePlannerInput from "./CreatePlannerInput";
+
+export default function CreatePlanner({ create, folderId, folder }) {
+  const week = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado",
+  ];
   return (
     <>
-      {destruct.map((subject) => (
-        <option
-          value={{
-            folderId,
-            subjectId: subject.subjectId,
-            topicId: subject.topicId,
-          }}
-        >
-          {subject.subjectName} - {subject.topicName}
-        </option>
-      ))}
+      {week.map((day) => {
+        return (
+          <li>
+            <h1>{day}</h1>
+            <select name="" id="">
+              {folder.subjects.map((subject)=>{
+                return <CreatePlannerInput subject={subject} folderId={folderId}/>
+              })}
+            </select>
+            <button>Adicionar Tópico</button>
+          </li>
+        );
+      })}
     </>
   );
 }
-
-const HomeSection = styled.section`
-  margin-top: 60px;
-  width: 95%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;

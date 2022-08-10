@@ -11,23 +11,6 @@ export default function Planner() {
   const { URL } = useContext(AuthContext);
   const [folder, setFolder] = useState({ subjects: [] });
   const [create, setCreate] = useState(false);
-  const destruct = [
-    {
-      subjectId: "",
-      topicId: "",
-      subjectName: "",
-      topicName: "",
-    },
-  ];
-  const week = [
-    "Domingo",
-    "Segunda-feira",
-    "Terça-feira",
-    "Quarta-feira",
-    "Quinta-feira",
-    "Sexta-feira",
-    "Sábado",
-  ];
   const user = JSON.parse(localStorage.getItem("user"));
   const folderId = useParams().id;
   const config = {
@@ -35,7 +18,7 @@ export default function Planner() {
       Authorization: `Bearer ${user.token}`,
     },
   };
-
+  console.log(folder)
   useEffect(() => {
     axios
       .get(URL + `/folder/${folderId}`, config)
@@ -49,20 +32,6 @@ export default function Planner() {
   }, []);
 
   if (create) {
-    let cont = 1;
-    folder.subjects.map((subject) => {
-      subject.topics.map((topic) => {
-        destruct[cont] = {
-          subjectId: subject.id,
-          topicId: topic.id,
-          subjectName: subject.name,
-          topicName: topic.name,
-        };
-        cont++;
-      });
-    });
-    console.log(destruct);
-
     return (
       <FolderSection>
         <TitleContainer>
@@ -70,7 +39,11 @@ export default function Planner() {
           <h2>09/08/2022</h2>
         </TitleContainer>
         <PlannerList>
-          {week.map((day) => {
+        <CreatePlanner create={create} folderId={folderId} folder={folder}/>
+
+
+
+          {/* {week.map((day) => {
             return (
               <li>
                 <h1>{day}</h1>
@@ -80,7 +53,7 @@ export default function Planner() {
                 <button>Adicionar Tópico</button>
               </li>
             );
-          })}
+          })} */}
         </PlannerList>
         <Buttons>
           <Button>
