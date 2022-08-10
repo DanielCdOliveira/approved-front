@@ -4,6 +4,7 @@ import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
+import { BiListPlus } from "react-icons/bi";
 
 import Subject from "./Subject.jsx";
 
@@ -41,20 +42,22 @@ export default function Folder({ folder, config }) {
   return (
     <FolderContainer>
       <FolderItem>
-        <h2
-          onClick={() => {
-            openSubjects();
-          }}
-        >
-          {folder.name}
-        </h2>
-        <div>
+        <div className="title">
+          <h2
+            onClick={() => {
+              openSubjects();
+            }}
+          >
+            {folder.name}
+          </h2>
           <TbEdit
             className="edit-folder"
-            onClick={() => {
-              editFolder();
-            }}
           />
+        </div>
+        <div>
+          <BiListPlus className="plus-folder"  onClick={() => {
+              editFolder();
+            }}/>
           <MdOutlineDelete className="delete-folder" />
         </div>
       </FolderItem>
@@ -105,11 +108,18 @@ const FolderItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .title{
+    display: flex;
+    align-items: center;
+    width: 80%;
+  }
   h2 {
+    max-width: 100%;
     font-size: 30px;
     line-height: 48px;
     font-weight: 600;
     cursor: pointer;
+    padding-right: 10px;
   }
   .edit-folder {
     font-size: 30px;
@@ -119,6 +129,11 @@ const FolderItem = styled.div`
   .delete-folder {
     font-size: 30px;
     color: #af2727;
+    cursor: pointer;
+  }
+  .plus-folder {
+    font-size: 30px;
+    margin-right: 10px;
     cursor: pointer;
   }
 `;
