@@ -8,15 +8,19 @@ import { BiListPlus } from "react-icons/bi";
 
 import Topic from "./Topic";
 
-export default function Subject({ subject, config }) {
+export default function Subject({ subject, config, URL }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
 
   function createNewTopic(e) {
-    e.preventDefault();
+    const data = {
+      name: newTopic,
+      subjectId: subject.id,
+      isDone: false
+    }
     axios
-      .post(URL + "/topic", {}, config)
+      .post(URL + "/topic", data, config)
       .then((e) => {
         console.log(e);
       })
@@ -69,8 +73,9 @@ export default function Subject({ subject, config }) {
                 onChange={(e) => {
                   setNewTopic(e.target.value);
                 }}
+                value={newTopic}
               />
-              <button className="add-button" type="submit">
+              <button className="add-button" onClick={()=>{createNewTopic()}}>
                 <BiPlusCircle />
               </button>
             </TopicForm>
