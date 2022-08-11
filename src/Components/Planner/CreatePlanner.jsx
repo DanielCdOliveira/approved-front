@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
+import { FaPlus } from "react-icons/fa";
 
 import CreatePlannerInput from "./CreatePlannerInput";
 
-export default function CreatePlanner({ create, folderId, folder }) {
+export default function CreatePlanner({ config, folderId, folder }) {
   const [option, setOption] = useState("");
+  const { URL } = useContext(AuthContext);
   const week = [
     "Domingo",
     "Segunda-feira",
@@ -17,26 +19,38 @@ export default function CreatePlanner({ create, folderId, folder }) {
     "Sábado",
   ];
   function changeInput(value) {
-    const optionData = value.split(" ");
-    setOption({
-      folderId: parseInt(optionData[0]),
-      subjectId: parseInt(optionData[1]),
-      topicId: parseInt(optionData[2]),
-    });
+    if (value === "") {
+      setOption("");
+    } else {
+      const optionData = value.split(" ");
+      setOption({
+        folderId: parseInt(optionData[0]),
+        subjectId: parseInt(optionData[1]),
+        topicId: parseInt(optionData[2]),
+      });
+    }
+  }
+  function createPlanner(weekDay) {
+    console.log({ ...option, weekDay });
+    axios
+      .post(URL + `/planner`, { ...option, weekDay }, config)
+      .then((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
   console.log(option);
+
   return (
     <>
-      {week.map((day) => {
+      {week.map((day, index) => {
         return (
-          <li>
+          <WeekDayLi>
             <h1>{day}</h1>
-            <select
-              name=""
-              id=""
-              onChange={(e) => changeInput(e.target.value)}
-              value={option}
-            >
+            <SelectContainer>
+              <SelectTopic name="" id="" onChange={(e) => changeInput(e.target.value)}>
               {folder.subjects.map((subject, index) => {
                 if (index === 0) {
                   return (
@@ -59,11 +73,47 @@ export default function CreatePlanner({ create, folderId, folder }) {
                   );
                 }
               })}
-            </select>
-            <button>Adicionar Tópico</button>
-          </li>
+            </SelectTopic>
+            <CreateButton onClick={() => createPlanner(index)}>
+              <FaPlus/>
+            </CreateButton>
+            </SelectContainer>
+            
+          </WeekDayLi>
         );
       })}
-    </>
+    </> 
   );
 }
+
+const WeekDayLi = styled.li`
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+`
+const SelectContainer = styled.div`
+margin-top: 8px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`
+
+const SelectTopic = styled.select`
+  font-size: 14px;
+  width: 90%;
+  background-color: #242424;
+  height: 30px;
+  border: none;
+  color:#fff;
+  outline: none;
+`
+const CreateButton = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+width: 10%;
+font-size: 24px;
+line-height: 10px;
+background-color: #3D3D3D;
+cursor: pointer;
+`

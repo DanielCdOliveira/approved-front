@@ -35,11 +35,11 @@ export default function Planner() {
     return (
       <FolderSection>
         <TitleContainer>
-          <h1>Planner </h1>
+          <h1>Planner</h1>
           <h2>09/08/2022</h2>
         </TitleContainer>
         <PlannerList>
-        <CreatePlanner create={create} folderId={folderId} folder={folder}/>
+        <CreatePlanner config={config} folderId={folderId} folder={folder}/>
         </PlannerList>
         <Buttons>
           <Button>
@@ -94,11 +94,6 @@ const PlannerList = styled.ul`
   margin-top: 60px;
   width: 95%;
   height: fit-content;
-  background-color: blue;
-  li {
-    font-size: 22px;
-    font-weight: 700;
-  }
 `;
 const Buttons = styled.div`
   width: 90%;
@@ -120,8 +115,10 @@ const Button = styled.div`
   justify-content: center;
   align-items: center;
   h3 {
-    font-size: 23px;
+    font-size: 22px;
+    width: 60%;
     margin-right: 20px;
+    text-align: center;
   }
   svg {
     font-size: 30px;

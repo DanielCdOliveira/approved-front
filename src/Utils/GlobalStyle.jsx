@@ -47,6 +47,7 @@ table {
 }
 * {
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
 }
 `;
 
