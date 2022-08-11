@@ -3,23 +3,51 @@ import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 import {FaPlus} from "react-icons/fa"
+import dayjs from "dayjs";
+
+import StudiesList from "../StudiesList";
 
 export default function Today() {
   const { URL } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [planners, setPlanners] = useState([])
+  const [create, setCreate] = useState(false)
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
+  const week = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado",
+  ];
+const today = dayjs().format("DD/MM/YYYY")
+const dayOfWeek = dayjs().day()
+const weekDayName = week[dayOfWeek]
+useEffect(() => {
+    axios
+    .get(URL + `/planner`, config)
+    .then((e) => {
+      setPlanners(e.data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+    setCreate(!create);
+}, []);
   return (
     <FolderSection>
       <TitleContainer>
-        <h1>Segunda-Feira</h1>
-        <h2>09/08/2022</h2>
+        <h1>{weekDayName}</h1>
+        <h2>{today}</h2>
       </TitleContainer>
       <TodayList>
-        <StudiesList></StudiesList>
+        <StudiesList planners={planners} dayOfWeek={dayOfWeek}/>
         <ReviewsList></ReviewsList>
       </TodayList>
       <Buttons>
@@ -27,10 +55,10 @@ export default function Today() {
           <h3>Adicionar estudo</h3>
           <FaPlus/>
         </Button>
-        <Button>
+        {/* <Button>
           <h3>Agendar revisão</h3>
           <FaPlus/>
-        </Button>
+        </Button> */}
       </Buttons>
     </FolderSection>
   );
@@ -52,7 +80,7 @@ const FolderSection = styled.section`
 `;
 const TitleContainer = styled.div`
   width: 90%;
-  height: 50px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,9 +101,9 @@ const TodayList = styled.ul`
   width: 95%;
   height: fit-content;
 `;
-const StudiesList = styled.ul`
 
-`;const ReviewsList = styled.ul`
+
+const ReviewsList = styled.ul`
 
 `;
 const Buttons = styled.div`
@@ -83,7 +111,7 @@ width: 90%;
   height: 80px;
   border-radius: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: absolute;
   bottom: 40px;
@@ -91,7 +119,7 @@ width: 90%;
 const Button = styled.div`
   background-color: #333333;
   border: solid 1px #A3A3A3;
-  width: 48%;
+  width: 80%;
   height: 80px;
   border-radius: 10px;
   display: flex;

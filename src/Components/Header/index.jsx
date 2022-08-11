@@ -43,10 +43,7 @@ export default function Header() {
       </nav>
 
       <div className="logout">
-        <div onClick={goToProfile}>
-          <CgProfile/>
-          <p>Profile</p>
-        </div>
+        
         <div onClick={logout}>
           <BiLogIn/>
           <p>Logout</p>
@@ -74,6 +71,7 @@ const MainHeader = styled.header`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   img{
     height: 100%;
+    cursor: pointer;
   }
   h2{
     color: #ffffff;
@@ -109,7 +107,7 @@ const MainHeader = styled.header`
     top: 72px;
     z-index: 3;
     overflow-y: hidden;
-    ${(props) => (props.showLogout ? "height:75px;" : "height:0;")}
+    ${(props) => (props.showLogout ? "height:50px;" : "height:0;")}
     transition: all 0.5s;
     display: flex;
     align-items: center;
