@@ -116,7 +116,7 @@ const FolderItem = styled.div`
   .title{
     display: flex;
     align-items: center;
-    width: 80%;
+    width: 75%;
   }
   h2 {
     max-width: 100%;

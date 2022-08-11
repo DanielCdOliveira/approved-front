@@ -1,20 +1,22 @@
 import styled from "styled-components";
-
 import {BsArrowReturnRight} from "react-icons/bs"
-export default function ShowPlanner({ index, plannerDay }) {
-  if (index === plannerDay.weekDay) {
-    return (
-      <PlannerItem>
-        <BsArrowReturnRight/>
-        <SubjectName>{plannerDay.subjectName}:</SubjectName>
-        <TopicName>{plannerDay.topicName}</TopicName>
-      </PlannerItem>
-    );
-  } else {
-    return <></>;
-  }
-}
 
+export default function StudyItem({planner, dayOfWeek}) {
+    
+    if (dayOfWeek === planner.weekDay) {
+        return (
+          <PlannerItem>
+            <BsArrowReturnRight/>
+            <SubjectName>{planner.subjectName}:</SubjectName>
+            <TopicName>{planner.topicName}</TopicName>
+          </PlannerItem>
+        );
+      } else {
+        return <></>;
+      }
+
+    
+}
 const PlannerItem = styled.li`
     display: flex;
     align-items: center;
