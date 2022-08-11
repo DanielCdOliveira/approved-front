@@ -16,7 +16,6 @@ export default function Folder({ folder, config,URL }) {
   const navigate = useNavigate()
   
   function createNewSubject(e) {
-    console.log("DSaasdasdasdasddsa");
     const data = {folderId: folder.id,
     name:newSubject,
   isDone:false}

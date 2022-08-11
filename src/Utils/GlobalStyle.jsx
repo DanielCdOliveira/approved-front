@@ -49,6 +49,25 @@ table {
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
 }
+* {
+    scrollbar-width: auto;
+    scrollbar-color: #f7f7f7 #262626;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #262626;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #f7f7f7;
+    border-radius: 3px;
+    border: 5px none #ffffff;
+  }
 `;
 
  

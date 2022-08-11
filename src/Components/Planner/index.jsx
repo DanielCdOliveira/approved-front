@@ -10,6 +10,7 @@ import CreatePlanner from "./CreatePlanner.jsx";
 export default function Planner() {
   const { URL } = useContext(AuthContext);
   const [folder, setFolder] = useState({ subjects: [] });
+  const [planner, setPlanner] = useState([]);
   const [create, setCreate] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   const folderId = useParams().id;
@@ -24,13 +25,21 @@ export default function Planner() {
       .get(URL + `/folder/${folderId}`, config)
       .then((e) => {
         setFolder(e.data);
-        setCreate(!create);
+        
       })
       .catch((e) => {
         console.log(e);
       });
+      axios
+      .get(URL + `/planner/${folderId}`, config)
+      .then((e) => {
+        setPlanner(e.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+      setCreate(!create);
   }, []);
-
   if (create) {
     return (
       <FolderSection>
@@ -39,18 +48,8 @@ export default function Planner() {
           <h2>09/08/2022</h2>
         </TitleContainer>
         <PlannerList>
-        <CreatePlanner config={config} folderId={folderId} folder={folder}/>
+        <CreatePlanner config={config} folderId={folderId} folder={folder} planner={planner}/>
         </PlannerList>
-        <Buttons>
-          <Button>
-            <h3>Adicionar estudo</h3>
-            <FaPlus />
-          </Button>
-          <Button>
-            <h3>Agendar revisão</h3>
-            <FaPlus />
-          </Button>
-        </Buttons>
       </FolderSection>
     );
   } else {
@@ -94,6 +93,8 @@ const PlannerList = styled.ul`
   margin-top: 60px;
   width: 95%;
   height: fit-content;
+  max-height: 80%;
+  overflow-y: scroll;
 `;
 const Buttons = styled.div`
   width: 90%;
