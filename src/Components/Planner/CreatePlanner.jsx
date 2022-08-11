@@ -5,8 +5,8 @@ import { AuthContext } from "../../Context/Auth";
 import { FaPlus } from "react-icons/fa";
 
 import CreatePlannerInput from "./CreatePlannerInput";
-
-export default function CreatePlanner({ config, folderId, folder }) {
+import ShowPlanner from "./ShowPlanner";
+export default function CreatePlanner({ config, folderId, folder, planner }) {
   const [option, setOption] = useState("");
   const { URL } = useContext(AuthContext);
   const week = [
@@ -41,8 +41,7 @@ export default function CreatePlanner({ config, folderId, folder }) {
         console.log(e);
       });
   }
-  console.log(option);
-
+  console.log(planner);
   return (
     <>
       {week.map((day, index) => {
@@ -50,53 +49,61 @@ export default function CreatePlanner({ config, folderId, folder }) {
           <WeekDayLi>
             <h1>{day}</h1>
             <SelectContainer>
-              <SelectTopic name="" id="" onChange={(e) => changeInput(e.target.value)}>
-              {folder.subjects.map((subject, index) => {
-                if (index === 0) {
-                  return (
-                    <>
-                      <option value="">Escolha uma opção...</option>
+              <SelectTopic
+                name=""
+                id=""
+                onChange={(e) => changeInput(e.target.value)}
+              >
+                {folder.subjects.map((subject, index) => {
+                  if (index === 0) {
+                    return (
+                      <>
+                        <option value="">Escolha uma opção...</option>
+                        <CreatePlannerInput
+                          subject={subject}
+                          folderId={folderId}
+                          setOption={setOption}
+                        />
+                      </>
+                    );
+                  } else {
+                    return (
                       <CreatePlannerInput
                         subject={subject}
                         folderId={folderId}
                         setOption={setOption}
                       />
-                    </>
-                  );
-                } else {
-                  return (
-                    <CreatePlannerInput
-                      subject={subject}
-                      folderId={folderId}
-                      setOption={setOption}
-                    />
-                  );
-                }
-              })}
-            </SelectTopic>
-            <CreateButton onClick={() => createPlanner(index)}>
-              <FaPlus/>
-            </CreateButton>
+                    );
+                  }
+                })}
+              </SelectTopic>
+              <CreateButton onClick={() => createPlanner(index)}>
+                <FaPlus />
+              </CreateButton>
             </SelectContainer>
-            
+            <PlannerItems>
+              {planner.map((plannerDay) => {
+                return <ShowPlanner index={index} plannerDay={plannerDay} />;
+              })}
+            </PlannerItems>
           </WeekDayLi>
         );
       })}
-    </> 
+    </>
   );
 }
 
 const WeekDayLi = styled.li`
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
-`
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+`;
 const SelectContainer = styled.div`
-margin-top: 8px;
+  margin-top: 8px;
   display: flex;
   width: 100%;
   justify-content: center;
-`
+`;
 
 const SelectTopic = styled.select`
   font-size: 14px;
@@ -104,16 +111,21 @@ const SelectTopic = styled.select`
   background-color: #242424;
   height: 30px;
   border: none;
-  color:#fff;
+  color: #fff;
   outline: none;
-`
+`;
 const CreateButton = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-width: 10%;
-font-size: 24px;
-line-height: 10px;
-background-color: #3D3D3D;
-cursor: pointer;
-`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10%;
+  font-size: 24px;
+  line-height: 10px;
+  background-color: #3d3d3d;
+  cursor: pointer;
+`;
+const PlannerItems = styled.ul`
+margin-top: 8px;
+  width: 100%;
+  height: fit-content;
+`;
