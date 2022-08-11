@@ -5,19 +5,23 @@ import { BiPlusCircle } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 import Subject from "./Subject.jsx";
 
-export default function Folder({ folder, config }) {
+export default function Folder({ folder, config,URL }) {
   const [newSubject, setNewSubject] = useState("");
   const [showSubjects, setShowSubjects] = useState(false);
   const [inputFolder, setInputFolder] = useState(false);
-  console.log(folder);
-
+  const navigate = useNavigate()
+  
   function createNewSubject(e) {
-    e.preventDefault();
+    console.log("DSaasdasdasdasddsa");
+    const data = {folderId: folder.id,
+    name:newSubject,
+  isDone:false}
     axios
-      .post(URL + "/subject", {}, config)
+      .post(URL + "/subject", data, config)
       .then((e) => {
         console.log(e);
       })
@@ -26,7 +30,7 @@ export default function Folder({ folder, config }) {
       });
   }
 
-  function editFolder() {
+  function showInput() {
     if (!showSubjects) {
       setShowSubjects(true);
     }
@@ -52,11 +56,12 @@ export default function Folder({ folder, config }) {
           </h2>
           <TbEdit
             className="edit-folder"
+            onClick={()=>{navigate(`../folder/${folder.id}`)}}
           />
         </div>
         <div>
           <BiListPlus className="plus-folder"  onClick={() => {
-              editFolder();
+              showInput();
             }}/>
           <MdOutlineDelete className="delete-folder" />
         </div>
@@ -64,7 +69,7 @@ export default function Folder({ folder, config }) {
 
       <SubjectsList showSubjects={showSubjects}>
         <div>
-          <SubjectForm onSubmit={createNewSubject} inputFolder={inputFolder}>
+          <SubjectForm inputFolder={inputFolder}>
             <input
               type="text"
               name=""
@@ -73,15 +78,16 @@ export default function Folder({ folder, config }) {
               onChange={(e) => {
                 setNewSubject(e.target.value);
               }}
+              value={newSubject}
             />
-            <button className="add-button" type="submit">
+            <button className="add-button" onClick={()=>{createNewSubject()}}>
               <BiPlusCircle />
             </button>
           </SubjectForm>
           <div>
             {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
-                <Subject subject={subject} config={config} />
+                <Subject subject={subject} config={config} URL={URL} />
               ))
             ) : (
               <></>

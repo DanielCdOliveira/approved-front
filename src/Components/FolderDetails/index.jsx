@@ -5,13 +5,15 @@ import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 
 
-import Folder from "./Folder.jsx";
+import Subject from "../Folders/Subject";
+import { useParams } from "react-router-dom";
 
-export default function Folders() {
-  const [newFolder, setNewFolder] = useState("");
+export default function Folder() {
   const { URL } = useContext(AuthContext);
-  const [folders, setFolders] = useState([]);
+  const [folder, setFolder] = useState({subjects:[]});
   const user = JSON.parse(localStorage.getItem("user"));
+  const folderId = useParams().id
+  console.log(folderId);
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -19,56 +21,29 @@ export default function Folders() {
   };
   useEffect(() => {
     axios
-      .get(URL + "/folder", config)
+      .get(URL + `/folder/${folderId}`, config)
       .then((e) => {
-        setFolders(e.data);
+        setFolder(e.data);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
-  console.log(folders);
-  console.log(config);
-  console.log(newFolder);
 
-  function createNewFolder(e) {
-    console.log("entrou");
-    e.preventDefault();
-    axios
-      .post(URL + "/folder", { name: newFolder}, config)
-      .then((e) => {
-        console.log(e);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
 
   return (
     <FolderSection>
       <TitleContainer>
-        <h1>Pastas</h1>
+        <h1>{folder.name}</h1>
       </TitleContainer>
-      <FolderForm onSubmit={createNewFolder}>
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Criar nova pasta ..."
-          onChange={(e) => {
-            setNewFolder(e.target.value);
-          }}
-        />
-        <button className="add-button" type="submit">
-          <BiPlusCircle />
-        </button>
-      </FolderForm>
       <FolderList>
-        {folders.length > 0 ? (
-          folders.map((folder) => <Folder folder={folder} config={config} URL={URL} />)
-        ) : (
-          <></>
-        )}
+      {folder.subjects.length > 0 ? (
+              folder.subjects.map((subject) => (
+                <Subject subject={subject} config={config} URL={URL} />
+              ))
+            ) : (
+              <></>
+            )}
       </FolderList>
     </FolderSection>
   );

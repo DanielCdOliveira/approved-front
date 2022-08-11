@@ -2,38 +2,60 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import {FaPlus} from "react-icons/fa"
+import { FaPlus } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
-export default function Today() {
+import CreatePlanner from "./CreatePlanner.jsx";
+
+export default function Planner() {
   const { URL } = useContext(AuthContext);
+  const [folder, setFolder] = useState({ subjects: [] });
+  const [create, setCreate] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const folderId = useParams().id;
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
-  return (
-    <FolderSection>
-      <TitleContainer>
-        <h1>Segunda-Feira</h1>
-        <h2>09/08/2022</h2>
-      </TitleContainer>
-      <TodayList>
-        <StudiesList></StudiesList>
-        <ReviewsList></ReviewsList>
-      </TodayList>
-      <Buttons>
-        <Button>
-          <h3>Adicionar estudo</h3>
-          <FaPlus/>
-        </Button>
-        <Button>
-          <h3>Agendar revisão</h3>
-          <FaPlus/>
-        </Button>
-      </Buttons>
-    </FolderSection>
-  );
+  console.log(folder)
+  useEffect(() => {
+    axios
+      .get(URL + `/folder/${folderId}`, config)
+      .then((e) => {
+        setFolder(e.data);
+        setCreate(!create);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
+  if (create) {
+    return (
+      <FolderSection>
+        <TitleContainer>
+          <h1>Planner</h1>
+          <h2>09/08/2022</h2>
+        </TitleContainer>
+        <PlannerList>
+        <CreatePlanner config={config} folderId={folderId} folder={folder}/>
+        </PlannerList>
+        <Buttons>
+          <Button>
+            <h3>Adicionar estudo</h3>
+            <FaPlus />
+          </Button>
+          <Button>
+            <h3>Agendar revisão</h3>
+            <FaPlus />
+          </Button>
+        </Buttons>
+      </FolderSection>
+    );
+  } else {
+    return <></>;
+  }
 }
 
 const FolderSection = styled.section`
@@ -62,24 +84,19 @@ const TitleContainer = styled.div`
     line-height: 60px;
     color: #fff;
   }
-  h2{
+  h2 {
     font-size: 25px;
     font-weight: 200;
     line-height: 45px;
   }
 `;
-const TodayList = styled.ul`
-  margin-top: 15px;
+const PlannerList = styled.ul`
+  margin-top: 60px;
   width: 95%;
   height: fit-content;
 `;
-const StudiesList = styled.ul`
-
-`;const ReviewsList = styled.ul`
-
-`;
 const Buttons = styled.div`
-width: 90%;
+  width: 90%;
   height: 80px;
   border-radius: 10px;
   display: flex;
@@ -87,21 +104,23 @@ width: 90%;
   align-items: center;
   position: absolute;
   bottom: 40px;
-`
+`;
 const Button = styled.div`
   background-color: #333333;
-  border: solid 1px #A3A3A3;
+  border: solid 1px #a3a3a3;
   width: 48%;
   height: 80px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  h3{
-    font-size: 23px;
+  h3 {
+    font-size: 22px;
+    width: 60%;
     margin-right: 20px;
+    text-align: center;
   }
-  svg{
+  svg {
     font-size: 30px;
   }
-`
+`;

@@ -4,19 +4,23 @@ import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
+import { BiListPlus } from "react-icons/bi";
 
 import Topic from "./Topic";
 
-export default function Subject({ subject, config }) {
+export default function Subject({ subject, config, URL }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
-  console.log(subject);
 
   function createNewTopic(e) {
-    e.preventDefault();
+    const data = {
+      name: newTopic,
+      subjectId: subject.id,
+      isDone: false
+    }
     axios
-      .post(URL + "/topic", {}, config)
+      .post(URL + "/topic", data, config)
       .then((e) => {
         console.log(e);
       })
@@ -48,7 +52,7 @@ export default function Subject({ subject, config }) {
           {subject.name}
         </h2>
         <div>
-          <TbEdit
+          <BiListPlus
             className="edit-subject"
             onClick={() => {
               editSubject();
@@ -69,15 +73,16 @@ export default function Subject({ subject, config }) {
                 onChange={(e) => {
                   setNewTopic(e.target.value);
                 }}
+                value={newTopic}
               />
-              <button className="add-button" type="submit">
+              <button className="add-button" onClick={()=>{createNewTopic()}}>
                 <BiPlusCircle />
               </button>
             </TopicForm>
             <div>
               {subject.topics.length > 0 ? (
-                subject.topics.map((subject) => (
-                  <Topic subject={subject} config={config} />
+                subject.topics.map((topic) => (
+                  <Topic topic={topic} config={config} />
                 ))
               ) : (
                 <></>

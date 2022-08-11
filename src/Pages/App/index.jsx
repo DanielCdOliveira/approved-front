@@ -5,7 +5,7 @@ import AuthProvider from "../../Context/Auth.jsx";
 import Login from "../Login/index.jsx";
 import Signup from "../Signup/index.jsx";
 import Home from "../Home/index.jsx";
-
+import FolderPage from "../FolderPage/index.jsx"
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +15,7 @@ function App() {
         <Route path="/" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/home" element={<Home />}></Route>
+        <Route path="/folder/:id" element={<FolderPage />}></Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
