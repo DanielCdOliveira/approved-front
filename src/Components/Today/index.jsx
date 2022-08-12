@@ -125,7 +125,8 @@ const TitleContainer = styled.div`
 const TodayList = styled.ul`
   margin-top: 15px;
   width: 95%;
-  height: fit-content;
+  height: 65%;
+  overflow-y: auto;
 `;
 
 
@@ -155,6 +156,7 @@ const Button = styled.div`
   h3{
     font-size: 23px;
     margin-right: 20px;
+    text-align: center;
   }
   svg{
     font-size: 30px;

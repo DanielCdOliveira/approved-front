@@ -33,14 +33,14 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width: "50%",
-      height: "50%",
+      width: "40%",
+      height: "40%",
       background: "#171717",
       borderRadius: "50px",
       textAlign: "center",
       color: "white",
-      paddingLeft: "100px",
-      paddingRight: "100px",
+      paddingLeft: "40px",
+      paddingRight: "40px",
       fontSize: "34px",
     },
   };
@@ -65,90 +65,164 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
       setTopicOption(parseInt(value));
     }
   }
-  useEffect(() => {
-    if (folderOption !== "") {
-    }
-  }, [folderOption]);
-  console.log(folderOption);
+  function createStudy() {
+    const data = {
+      folderId: folders[folderOption].id,
+      subjectId: folders[folderOption].subjects[subjectOption].id,
+      topicId:
+        folders[folderOption].subjects[subjectOption].topics[topicOption].id,
+    };
+    console.log(data);
+    axios
+      .post(URL + "/study", data, config)
+      .then((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+      closeModal();
+  }
+  function closeModal(){
+    closeStudyModal()
+    clearData()
+  }
+  function clearData(){
+    setFolderOption("")
+    setSubjectOption("")
+    setTopicOption("")
+  }
+  console.log(folderOption, subjectOption, topicOption);
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={closeStudyModal}
+      onRequestClose={closeModal}
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <h2>Escolha a pasta:</h2>
-      <SelectFolder onChange={(e) => changeFolderInput(e.target.value)}>
-        {folders.map((folder, index) => {
-          if (index === 0) {
-            console.log(index);
-            return (
-              <>
-                <option value="">Escolha uma opção...</option>
-                <option value={`${index}`}>{folder.name}</option>
-              </>
-            );
-          } else {
-            return <option value={`${index}`}>{folder.name}</option>;
-          }
-        })}
-      </SelectFolder>
-      <SelectSubject
-        folderOption={folderOption}
-        onChange={(e) => changeSubjectInput(e.target.value)}
-      >
-        {folderOption !== "" && folders[folderOption].subjects.length ? (
-          folders[folderOption].subjects.map((subject, index) => {
-            if (index === 0) {
-              return (
-                <>
-                  <option value="">Escolha uma opção...</option>
-                  <option value={`${index}`}>{subject.name}</option>
-                </>
-              );
-            } else {
-              return <option value={`${index}`}>{subject.name}</option>;
-            }
-          })
-        ) : (
-          <option value={""}>Não há matérias</option>
-        )}
-      </SelectSubject>
-      <SelectTopic subjectOption={subjectOption} onChange={(e) => changeTopicInput(e.target.value)}>
-      {subjectOption !== "" && folders[folderOption].subjects[subjectOption].topics.length ? (
-          folders[folderOption].subjects[subjectOption].topics.map((topic, index) => {
-            if (index === 0) {
-              return (
-                <>
-                  <option value="">Escolha uma opção...</option>
-                  <option value={`${index}`}>{topic.name}</option>
-                </>
-              );
-            } else {
-              return <option value={`${index}`}>{topic.name}</option>;
-            }
-          })
-        ) : (
-          <option value={""}>Não há matérias</option>
-        )}
-      </SelectTopic>
-          <CreateButton topicOption={topicOption}>
-            
-          </CreateButton>
+      <ModalContainer>
+        <h2>Pasta:</h2>
+        <SelectFolder>
+          <select
+            name=""
+            id=""
+            onChange={(e) => changeFolderInput(e.target.value)}
+          >
+            {folders.map((folder, index) => {
+              if (index === 0) {
+                console.log(index);
+                return (
+                  <>
+                    <option value="">Escolha uma pasta...</option>
+                    <option value={`${index}`}>{folder.name}</option>
+                  </>
+                );
+              } else {
+                return <option value={`${index}`}>{folder.name}</option>;
+              }
+            })}
+          </select>
+        </SelectFolder>
+        <SelectSubject
+          folderOption={folderOption}
+          onChange={(e) => changeSubjectInput(e.target.value)}
+        >
+          <h2>Matéria:</h2>
+          <select name="" id="">
+            {folderOption !== "" && folders[folderOption].subjects.length ? (
+              folders[folderOption].subjects.map((subject, index) => {
+                if (index === 0) {
+                  return (
+                    <>
+                      <option value="">Escolha uma matéria...</option>
+                      <option value={`${index}`}>{subject.name}</option>
+                    </>
+                  );
+                } else {
+                  return <option value={`${index}`}>{subject.name}</option>;
+                }
+              })
+            ) : (
+              <option value={""}>Não há matérias</option>
+            )}
+          </select>
+        </SelectSubject>
+        <SelectTopic
+          subjectOption={subjectOption}
+          onChange={(e) => changeTopicInput(e.target.value)}
+        >
+          <h2>Tópico:</h2>
+          <select name="" id="">
+            {subjectOption !== "" &&
+            folders[folderOption].subjects[subjectOption].topics.length ? (
+              folders[folderOption].subjects[subjectOption].topics.map(
+                (topic, index) => {
+                  if (index === 0) {
+                    return (
+                      <>
+                        <option value="">Escolha um tópico...</option>
+                        <option value={`${index}`}>{topic.name}</option>
+                      </>
+                    );
+                  } else {
+                    return <option value={`${index}`}>{topic.name}</option>;
+                  }
+                }
+              )
+            ) : (
+              <option value={""}>Não há tópicos</option>
+            )}
+          </select>
+        </SelectTopic>
+        <CreateButton
+          topicOption={topicOption}
+          onClick={() => {
+            createStudy();
+          }}
+        >
+          <p>Estudo concluído!</p>
+        </CreateButton>
+      </ModalContainer>
     </Modal>
   );
 }
 
-const SelectFolder = styled.select``;
-const SelectSubject = styled.select`
-  ${(props) => (props.folderOption !== "" ? "" : "display:none;")};
+const ModalContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  select {
+    font-size: 14px;
+    width: 90%;
+    background-color: #242424;
+    height: 30px;
+    border: none;
+    color: #fff;
+    outline: none;
+  }
 `;
-const SelectTopic = styled.select`
+const SelectFolder = styled.div`
+  width: 100%;
+`;
+const SelectSubject = styled.div`
+  ${(props) => (props.folderOption !== "" ? "" : "display:none;")};
+  width: 100%;
+`;
+const SelectTopic = styled.div`
   ${(props) => (props.subjectOption !== "" ? "" : "display:none;")};
+  width: 100%;
 `;
 const CreateButton = styled.div`
   ${(props) => (props.topicOption !== "" ? "" : "display:none;")};
-  width: 100px;
-  height: 50px;
-  background-color: aqua;
-`
+  p {
+    text-align: center;
+    line-height: 60px;
+    font-size: 26px;
+  }
+  margin-top: 50px;
+  width: 80%;
+  height: 60px;
+  background-color: #5dac5b;
+  border-radius: 8px;
+`;

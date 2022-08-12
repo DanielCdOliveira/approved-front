@@ -136,7 +136,6 @@ const FolderList = styled.ul`
   margin-top: 15px;
   width: 95%;
   height: 80%;
-  max-height: 80%;
   overflow-y: auto;
 `;
 const Empty = styled.h2`
