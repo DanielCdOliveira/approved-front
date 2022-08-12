@@ -11,14 +11,30 @@ import { AuthContext } from "../../Context/Auth";
 
 export default function Home() {
   const { URL } = useContext(AuthContext);
-
+  const [folders, setFolders] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  useEffect(() => {
+    axios
+      .get(URL + "/folder", config)
+      .then((e) => {
+        setFolders(e.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   return (
     <PageContainer>
       <Header />
       <HomeSection>
         <Folders></Folders>
-        <Today></Today>
+        <Today folders={folders}></Today>
         <Historic></Historic>
       </HomeSection>
     </PageContainer>

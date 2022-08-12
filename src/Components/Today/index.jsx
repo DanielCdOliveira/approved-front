@@ -4,14 +4,29 @@ import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 import {FaPlus} from "react-icons/fa"
 import dayjs from "dayjs";
-
+import Modal from "react-modal"
 import StudiesList from "../StudiesList";
-
-export default function Today() {
+import StudyModal from "../Modal/StudyModal";
+Modal.setAppElement(".root");
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+export default function Today({folders}) {
   const { URL } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));
   const [planners, setPlanners] = useState([])
   const [create, setCreate] = useState(false)
+  const [studyModal, setStudyModal] = useState(true)
+  function handleStudyModal(){
+    setStudyModal(!studyModal)
+  }
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -26,6 +41,14 @@ export default function Today() {
     "Sexta-feira",
     "Sábado",
   ];
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openStudyModal() {
+    setIsOpen(true);
+  }
+  function closeStudyModal() {
+    setIsOpen(false);
+  }
 const today = dayjs().format("DD/MM/YYYY")
 const dayOfWeek = dayjs().day()
 const weekDayName = week[dayOfWeek]
@@ -51,7 +74,7 @@ useEffect(() => {
         <ReviewsList></ReviewsList>
       </TodayList>
       <Buttons>
-        <Button>
+        <Button onClick={()=>openStudyModal()}>
           <h3>Adicionar estudo</h3>
           <FaPlus/>
         </Button>
@@ -60,6 +83,9 @@ useEffect(() => {
           <FaPlus/>
         </Button> */}
       </Buttons>
+      <StudyModal modalIsOpen={modalIsOpen} closeStudyModal={closeStudyModal} openStudyModal={openStudyModal} folders={folders}/>
+
+
     </FolderSection>
   );
 }
@@ -115,6 +141,7 @@ width: 90%;
   align-items: center;
   position: absolute;
   bottom: 40px;
+  cursor: pointer;
 `
 const Button = styled.div`
   background-color: #333333;

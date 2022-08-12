@@ -19,7 +19,6 @@ export default function Planner() {
       Authorization: `Bearer ${user.token}`,
     },
   };
-  console.log(folder)
   useEffect(() => {
     axios
       .get(URL + `/folder/${folderId}`, config)
@@ -45,7 +44,6 @@ export default function Planner() {
       <FolderSection>
         <TitleContainer>
           <h1>Planner</h1>
-          <h2>09/08/2022</h2>
         </TitleContainer>
         <PlannerList>
         <CreatePlanner config={config} folderId={folderId} folder={folder} planner={planner}/>
@@ -90,11 +88,11 @@ const TitleContainer = styled.div`
   }
 `;
 const PlannerList = styled.ul`
-  margin-top: 60px;
+  margin-top: 30px;
   width: 95%;
   height: fit-content;
   max-height: 80%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 const Buttons = styled.div`
   width: 90%;
