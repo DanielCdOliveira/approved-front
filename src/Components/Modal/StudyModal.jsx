@@ -3,12 +3,14 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
+import { AiFillCloseCircle } from "react-icons/ai";
 Modal.setAppElement(".root");
 
 export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
   const [folderOption, setFolderOption] = useState("");
   const [subjectOption, setSubjectOption] = useState("");
   const [topicOption, setTopicOption] = useState("");
+  const [topicFinish, setTopicFinish] = useState("")
   const { URL } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));
   const config = {
@@ -34,7 +36,7 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       width: "40%",
-      height: "40%",
+      height: "50%",
       background: "#171717",
       borderRadius: "50px",
       textAlign: "center",
@@ -42,6 +44,7 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
       paddingLeft: "40px",
       paddingRight: "40px",
       fontSize: "34px",
+      position: "relative",
     },
   };
   function changeFolderInput(value) {
@@ -65,6 +68,15 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
       setTopicOption(parseInt(value));
     }
   }
+  function changeTopicFinishInput(value) {
+    if (value === "") {
+      setTopicFinish("");
+    } else {
+      if(value === "true")setTopicFinish(true);
+      if(value === "false")setTopicFinish(false);
+    }
+  }
+  console.log(topicFinish);
   function createStudy() {
     const data = {
       folderId: folders[folderOption].id,
@@ -81,16 +93,28 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
       .catch((e) => {
         console.log(e);
       });
-      closeModal();
+      if(topicFinish){
+      axios
+      .post(URL + `/topic/${data.topicId}`, data, config)
+      .then((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+      }
+    
+    closeModal();
   }
-  function closeModal(){
-    closeStudyModal()
-    clearData()
+  function closeModal() {
+    closeStudyModal();
+    clearData();
   }
-  function clearData(){
-    setFolderOption("")
-    setSubjectOption("")
-    setTopicOption("")
+  function clearData() {
+    setFolderOption("");
+    setSubjectOption("");
+    setTopicOption("");
+    setTopicFinish("");
   }
   console.log(folderOption, subjectOption, topicOption);
   return (
@@ -110,7 +134,6 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
           >
             {folders.map((folder, index) => {
               if (index === 0) {
-                console.log(index);
                 return (
                   <>
                     <option value="">Escolha uma pasta...</option>
@@ -174,14 +197,26 @@ export default function StudyModal({ folders, closeStudyModal, modalIsOpen }) {
             )}
           </select>
         </SelectTopic>
-        <CreateButton
+        <SelectTopicFinish
           topicOption={topicOption}
+          onChange={(e) => changeTopicFinishInput(e.target.value)}
+        >
+          <h2>Tópico concluído?</h2>
+          <select name="" id="">
+            <option value="">Escolha uma resposta...</option>
+            <option value={`true`}>sim</option>
+            <option value={`false`}>não</option>
+          </select>
+        </SelectTopicFinish>
+        <CreateButton
+          topicFinish={topicFinish}
           onClick={() => {
             createStudy();
           }}
         >
           <p>Estudo concluído!</p>
         </CreateButton>
+        <CloseButton onClick={closeModal}>voltar</CloseButton>
       </ModalContainer>
     </Modal>
   );
@@ -213,16 +248,28 @@ const SelectTopic = styled.div`
   ${(props) => (props.subjectOption !== "" ? "" : "display:none;")};
   width: 100%;
 `;
-const CreateButton = styled.div`
+const SelectTopicFinish = styled.div`
   ${(props) => (props.topicOption !== "" ? "" : "display:none;")};
+  width: 100%;
+`
+const CreateButton = styled.div`
+  ${(props) => ((props.topicFinish !== "") ? "" : "display:none;")};
+  cursor: pointer;
   p {
     text-align: center;
     line-height: 60px;
     font-size: 26px;
   }
   margin-top: 50px;
-  width: 80%;
+  width: 50%;
   height: 60px;
   background-color: #5dac5b;
   border-radius: 8px;
+`;
+const CloseButton = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  text-decoration: underline;
+  cursor: pointer;
 `;

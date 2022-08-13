@@ -42,61 +42,75 @@ export default function CreatePlanner({ config, folderId, folder, planner }) {
       });
   }
   console.log(planner);
-  return (
-    <>
-      {week.map((day, index) => {
-        return (
-          <WeekDayLi>
-            <h1>{day}</h1>
-            <SelectContainer>
-              <SelectTopic
-                name=""
-                id=""
-                onChange={(e) => changeInput(e.target.value)}
-              >
-                {folder.subjects.map((subject, index) => {
-                  if (index === 0) {
-                    return (
-                      <>
-                        <option value="">Escolha uma opção...</option>
+  if(folder.subjects.length){
+
+    return (
+      <>
+        {week.map((day, index) => {
+          return (
+            <WeekDayLi>
+              <h1>{day}</h1>
+              <SelectContainer>
+                <SelectTopic
+                  name=""
+                  id=""
+                  onChange={(e) => changeInput(e.target.value)}
+                >
+                  {folder.subjects.map((subject, index) => {
+                    if (index === 0) {
+                      return (
+                        <>
+                          <option value="">Escolha uma opção...</option>
+                          <CreatePlannerInput
+                            subject={subject}
+                            folderId={folderId}
+                            setOption={setOption}
+                          />
+                        </>
+                      );
+                    } else {
+                      return (
                         <CreatePlannerInput
                           subject={subject}
                           folderId={folderId}
                           setOption={setOption}
                         />
-                      </>
-                    );
-                  } else {
-                    return (
-                      <CreatePlannerInput
-                        subject={subject}
-                        folderId={folderId}
-                        setOption={setOption}
-                      />
-                    );
-                  }
+                      );
+                    }
+                  })}
+                </SelectTopic>
+                <CreateButton onClick={() => createPlanner(index)}>
+                  <FaPlus />
+                </CreateButton>
+              </SelectContainer>
+              <PlannerItems>
+                {planner.map((plannerDay) => {
+                  return <ShowPlanner index={index} plannerDay={plannerDay} />;
                 })}
-              </SelectTopic>
-              <CreateButton onClick={() => createPlanner(index)}>
-                <FaPlus />
-              </CreateButton>
-            </SelectContainer>
-            <PlannerItems>
-              {planner.map((plannerDay) => {
-                return <ShowPlanner index={index} plannerDay={plannerDay} />;
-              })}
-            </PlannerItems>
-          </WeekDayLi>
-        );
-      })}
-    </>
-  );
+              </PlannerItems>
+            </WeekDayLi>
+          );
+        })}
+      </>
+    );
+  }else{
+    return(
+     <WeekDayLi>
+      <p className="empty-subjects">Não há nenhuma matéria!</p>
+     </WeekDayLi>
+    )
+  }
 }
 
 const WeekDayLi = styled.li`
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 8px;
+  .empty-subjects{
+    width: 100%;
+    text-align: center;
+    color: #555555;
+  } 
 `;
 const SelectContainer = styled.div`
   margin-top: 8px;

@@ -76,12 +76,10 @@ useEffect(() => {
       <Buttons>
         <Button onClick={()=>openStudyModal()}>
           <h3>Adicionar estudo</h3>
-          <FaPlus/>
         </Button>
-        {/* <Button>
+        <Button>
           <h3>Agendar revisão</h3>
-          <FaPlus/>
-        </Button> */}
+        </Button>
       </Buttons>
       <StudyModal modalIsOpen={modalIsOpen} closeStudyModal={closeStudyModal} openStudyModal={openStudyModal} folders={folders}/>
 
@@ -134,11 +132,11 @@ const ReviewsList = styled.ul`
 
 `;
 const Buttons = styled.div`
-width: 90%;
+width: 100%;
   height: 80px;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   position: absolute;
   bottom: 40px;
@@ -147,17 +145,16 @@ width: 90%;
 const Button = styled.div`
   background-color: #333333;
   border: solid 1px #A3A3A3;
-  width: 80%;
+  width: 40%;
   height: 80px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   h3{
-    font-size: 23px;
-    margin-right: 20px;
     text-align: center;
-  }
+    font-size: 23px;
+    }
   svg{
     font-size: 30px;
   }
