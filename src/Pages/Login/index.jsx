@@ -55,7 +55,7 @@ export default function Login() {
           )}
         </button>
         <Link to={"/signup"}>
-          <p>First time? Create an account!</p>
+          <p>Primeira vez? Crie a sua conta aqui!</p>
         </Link>
       </form>
     </MainAuth>

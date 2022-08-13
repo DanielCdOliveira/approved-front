@@ -29,7 +29,7 @@ export default function Folder({ folder, config,URL }) {
       });
   }
 
-  function showInput() {
+  function showInput() {        
     if (!showSubjects) {
       setShowSubjects(true);
     }

@@ -4,7 +4,6 @@ import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 
-
 import Folder from "./Folder.jsx";
 
 export default function Folders() {
@@ -27,15 +26,11 @@ export default function Folders() {
         console.log(e);
       });
   }, []);
-  console.log(folders);
-  console.log(config);
-  console.log(newFolder);
-
   function createNewFolder(e) {
     console.log("entrou");
     e.preventDefault();
     axios
-      .post(URL + "/folder", { name: newFolder}, config)
+      .post(URL + "/folder", { name: newFolder }, config)
       .then((e) => {
         console.log(e);
       })
@@ -65,9 +60,11 @@ export default function Folders() {
       </FolderForm>
       <FolderList>
         {folders.length > 0 ? (
-          folders.map((folder) => <Folder folder={folder} config={config} URL={URL} />)
+          folders.map((folder) => (
+            <Folder folder={folder} config={config} URL={URL} />
+          ))
         ) : (
-          <></>
+          <Empty>Você ainda não possui nenhuma pasta de estudos!</Empty>
         )}
       </FolderList>
     </FolderSection>
@@ -122,7 +119,7 @@ const FolderForm = styled.form`
     font-family: "Oswald", sans-serif;
     width: 20%;
     height: 80%;
-    background-color: #A2A2A2;
+    background-color: #a2a2a2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,5 +135,13 @@ const FolderForm = styled.form`
 const FolderList = styled.ul`
   margin-top: 15px;
   width: 95%;
-  height: fit-content;
+  height: 80%;
+  overflow-y: auto;
+`;
+const Empty = styled.h2`
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: #555555; 
 `;

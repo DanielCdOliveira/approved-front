@@ -2,16 +2,28 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import {FaPlus} from "react-icons/fa"
+import { FaPlus } from "react-icons/fa";
 import dayjs from "dayjs";
-
+import Modal from "react-modal";
 import StudiesList from "../StudiesList";
-
-export default function Today() {
+import StudyModal from "../Modal/StudyModal";
+Modal.setAppElement(".root");
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+export default function Today({ folders }) {
   const { URL } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));
-  const [planners, setPlanners] = useState([])
-  const [create, setCreate] = useState(false)
+  const [planners, setPlanners] = useState([]);
+  const [create, setCreate] = useState(false);
+  const [modalOption, setModalOption] = useState("");
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -26,20 +38,29 @@ export default function Today() {
     "Sexta-feira",
     "Sábado",
   ];
-const today = dayjs().format("DD/MM/YYYY")
-const dayOfWeek = dayjs().day()
-const weekDayName = week[dayOfWeek]
-useEffect(() => {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openStudyModal(value) {
+    setIsOpen(true);
+    setModalOption(value)
+  }
+  function closeStudyModal() {
+    setIsOpen(false);
+  }
+  const today = dayjs().format("DD/MM/YYYY");
+  const dayOfWeek = dayjs().day();
+  const weekDayName = week[dayOfWeek];
+  useEffect(() => {
     axios
-    .get(URL + `/planner`, config)
-    .then((e) => {
-      setPlanners(e.data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .get(URL + `/planner`, config)
+      .then((e) => {
+        setPlanners(e.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     setCreate(!create);
-}, []);
+  }, []);
   return (
     <FolderSection>
       <TitleContainer>
@@ -47,19 +68,24 @@ useEffect(() => {
         <h2>{today}</h2>
       </TitleContainer>
       <TodayList>
-        <StudiesList planners={planners} dayOfWeek={dayOfWeek}/>
+        <StudiesList planners={planners} dayOfWeek={dayOfWeek} />
         <ReviewsList></ReviewsList>
       </TodayList>
       <Buttons>
-        <Button>
+        <Button onClick={() => openStudyModal("study")}>
           <h3>Adicionar estudo</h3>
-          <FaPlus/>
         </Button>
-        {/* <Button>
+        <Button onClick={() => openStudyModal("review")}>
           <h3>Agendar revisão</h3>
-          <FaPlus/>
-        </Button> */}
+        </Button>
       </Buttons>
+      <StudyModal
+        modalIsOpen={modalIsOpen}
+        closeStudyModal={closeStudyModal}
+        openStudyModal={openStudyModal}
+        folders={folders}
+        modalOption={modalOption}
+      />
     </FolderSection>
   );
 }
@@ -90,7 +116,7 @@ const TitleContainer = styled.div`
     line-height: 60px;
     color: #fff;
   }
-  h2{
+  h2 {
     font-size: 25px;
     font-weight: 200;
     line-height: 45px;
@@ -99,37 +125,36 @@ const TitleContainer = styled.div`
 const TodayList = styled.ul`
   margin-top: 15px;
   width: 95%;
-  height: fit-content;
+  height: 65%;
+  overflow-y: auto;
 `;
 
-
-const ReviewsList = styled.ul`
-
-`;
+const ReviewsList = styled.ul``;
 const Buttons = styled.div`
-width: 90%;
+  width: 100%;
   height: 80px;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   position: absolute;
   bottom: 40px;
-`
+  cursor: pointer;
+`;
 const Button = styled.div`
   background-color: #333333;
-  border: solid 1px #A3A3A3;
-  width: 80%;
+  border: solid 1px #a3a3a3;
+  width: 40%;
   height: 80px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  h3{
+  h3 {
+    text-align: center;
     font-size: 23px;
-    margin-right: 20px;
   }
-  svg{
+  svg {
     font-size: 30px;
   }
-`
+`;

@@ -3,16 +3,18 @@ import styled from "styled-components";
 import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
+import { BiListPlus } from "react-icons/bi";
 
 
-import Subject from "../Folders/Subject";
+import SubjectDetails from "./Subject";
 import { useParams } from "react-router-dom";
 
 export default function Folder() {
   const { URL } = useContext(AuthContext);
   const [folder, setFolder] = useState({subjects:[]});
   const user = JSON.parse(localStorage.getItem("user"));
-  const folderId = useParams().id
+  const folderId = parseInt(useParams().id)
+  const [newSubject, setNewSubject] = useState("");
   console.log(folderId);
   const config = {
     headers: {
@@ -29,17 +31,44 @@ export default function Folder() {
         console.log(e);
       });
   }, []);
-
-
+  function createNewSubject(e) {
+    e.preventDefault()
+    const data = {folderId,
+    name:newSubject,
+  isDone:false}
+  console.log(data);
+    axios
+      .post(URL + "/subject", data, config)
+      .then((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
   return (
     <FolderSection>
       <TitleContainer>
         <h1>{folder.name}</h1>
       </TitleContainer>
+      <FolderForm onSubmit={createNewSubject}>
+        <input
+          type="text"
+          name=""
+          id=""
+          placeholder="Criar nova matéria..."
+          onChange={(e) => {
+            setNewSubject(e.target.value);
+          }}
+        />
+        <button className="add-button" type="submit">
+          <BiPlusCircle />
+        </button>
+      </FolderForm>
       <FolderList>
       {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
-                <Subject subject={subject} config={config} URL={URL} />
+                <SubjectDetails subject={subject} config={config} URL={URL} />
               ))
             ) : (
               <></>
@@ -65,6 +94,9 @@ const FolderSection = styled.section`
 const TitleContainer = styled.div`
   width: 90%;
   height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   h1 {
     font-size: 30px;
     font-weight: 700;

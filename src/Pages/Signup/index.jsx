@@ -83,7 +83,7 @@ function Register() {
           )}
         </button>
         <Link to={"/"}>
-          <p>Switch back to log in</p>
+          <p>Voltar para login</p>
         </Link>
       </form>
     </MainAuth>
