@@ -4,9 +4,8 @@ import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 import { FaPlus } from "react-icons/fa";
-
-
-export default function Historic() {
+import ReviewList from "./ReviewList";
+export default function Reviews() {
   const [newFolder, setNewFolder] = useState("");
   const { URL } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
@@ -18,7 +17,7 @@ export default function Historic() {
   };
   useEffect(() => {
     axios
-      .get(URL + "/folder", config)
+      .get(URL + "/review", config)
       .then((e) => {
         setReviews(e.data);
       })
@@ -26,14 +25,13 @@ export default function Historic() {
         console.log(e);
       });
   }, []);
-
+  console.log(reviews);
   return (
     <Reviewsection>
       <TitleContainer>
-        <h1>Histórico</h1>
+        <h1>Revisões:</h1>
       </TitleContainer>
-      <ReviewList>
-      </ReviewList>
+      <ReviewList reviews={reviews}/>
     </Reviewsection>
   );
 }
@@ -63,8 +61,8 @@ const TitleContainer = styled.div`
   }
 `;
 
-const ReviewList = styled.ul`
-  margin-top: 15px;
-  width: 95%;
-  height: fit-content;
-`;
+// const ReviewList = styled.ul`
+//   margin-top: 15px;
+//   width: 95%;
+//   height: fit-content;
+// `;

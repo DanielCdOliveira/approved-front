@@ -129,6 +129,7 @@ export default function StudyModal({
         .catch((e) => {
           console.log(e);
         });
+        closeModal()
   }
   function closeModal() {
     closeStudyModal();
