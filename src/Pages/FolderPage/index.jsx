@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { useState,useEffect,useContext } from "react";
-import axios from "axios";
 
 import Header from "../../Components/Header";
 import { PageContainer } from "../../Utils/Styles";

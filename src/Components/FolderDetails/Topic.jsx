@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import axios from "axios";
 import {IoCloseSharp} from "react-icons/io5"
 
 export default function TopicDetails({ topic, config }) {

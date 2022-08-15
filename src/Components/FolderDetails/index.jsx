@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import { BiListPlus } from "react-icons/bi";
-
 
 import SubjectDetails from "./Subject";
 import { useParams } from "react-router-dom";

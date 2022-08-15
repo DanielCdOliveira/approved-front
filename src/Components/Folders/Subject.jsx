@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
-import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
 

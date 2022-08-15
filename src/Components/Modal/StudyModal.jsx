@@ -3,7 +3,6 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import { AiFillCloseCircle } from "react-icons/ai";
 import dayjs from "dayjs";
 Modal.setAppElement(".root");
 

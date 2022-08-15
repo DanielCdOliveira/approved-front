@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import { FaPlus } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 import CreatePlanner from "./CreatePlanner.jsx";

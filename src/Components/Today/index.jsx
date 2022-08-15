@@ -2,22 +2,13 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import { FaPlus } from "react-icons/fa";
 import dayjs from "dayjs";
 import Modal from "react-modal";
+
 import StudiesList from "../StudiesList";
 import StudyModal from "../Modal/StudyModal";
 Modal.setAppElement(".root");
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
+
 export default function Today({ folders }) {
   const { URL } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));

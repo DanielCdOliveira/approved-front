@@ -1,17 +1,14 @@
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
-import { FiSearch } from "react-icons/fi";
 import { BiLogIn } from "react-icons/bi";
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../Context/Auth";
-import axios from "axios"
+
+
 
 import logo from "../../Assets/logo.jpg"
 
 export default function Header() {
-  const { URL } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
@@ -22,11 +19,6 @@ export default function Header() {
   }
   function goToTimeline(){
     navigate("/Home");
-  }
-
-  function goToProfile(){
-    navigate(`/user/${user.userId}`)
-    window.location.reload()
   }
 
 
