@@ -8,7 +8,7 @@ import { BiListPlus } from "react-icons/bi";
 import TopicDetails from "./Topic";
 import { useParams } from "react-router-dom";
 
-export default function SubjectDetails({ subject, config, URL }) {
+export default function SubjectDetails({ subject, config, URL, refresh, setRefresh }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
@@ -23,10 +23,22 @@ export default function SubjectDetails({ subject, config, URL }) {
       .post(URL + "/topic", data, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
       })
       .catch((e) => {
         console.log(e);
       });
+  }
+  function deleteSubject(){
+    axios
+    .delete(URL + `/subject/${subject.id}`, config)
+    .then((e) => {
+      console.log(e);
+      setRefresh(!refresh)
+    })
+    .catch((e) => {
+      console.log(e);
+    });
   }
   function editSubject() {
     if (!showTopics) {
@@ -58,7 +70,7 @@ export default function SubjectDetails({ subject, config, URL }) {
               editSubject();
             }}
           />
-          <MdOutlineDelete className="delete-subject" />
+          <MdOutlineDelete className="delete-subject" onClick={()=>{deleteSubject()}} />
         </div>
       </SubjectItem>
       {showTopics ? (
@@ -82,7 +94,7 @@ export default function SubjectDetails({ subject, config, URL }) {
             <div>
               {subject.topics.length > 0 ? (
                 subject.topics.map((topic) => (
-                  <TopicDetails topic={topic} config={config} />
+                  <TopicDetails URL={URL}topic={topic} config={config} refresh={refresh} setRefresh={setRefresh}/>
                 ))
               ) : (
                 <></>
