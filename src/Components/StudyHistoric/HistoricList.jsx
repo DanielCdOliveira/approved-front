@@ -1,13 +1,26 @@
 import styled from "styled-components";
 import {BsArrowReturnRight} from "react-icons/bs"
-export default function HistoricList({ historic }) {
+import { IoCloseSharp } from "react-icons/io5";
+import axios from "axios";
+export default function HistoricList({ historic,URL, config }) {
+  function deleteStudy(id){
+    axios
+    .delete(URL + `/study/${id}`, config)
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
   if (historic.length > 0) {
     return (
       <List>
         {historic.map((historicItem) => {
           return (
             <ReviewItem>
-              <FolderName>{historicItem.folderName} - {historicItem.date}</FolderName>
+              <FolderName>{historicItem.folderName} - {historicItem.date}  <IoCloseSharp className="delete" onClick={()=>{deleteStudy(historicItem.id)}}/></FolderName>
+            
               <div>
                 <BsArrowReturnRight />
                 <SubjectName>{historicItem.subjectName}:</SubjectName>
@@ -37,12 +50,20 @@ const ReviewItem = styled.li`
     width: auto;
     padding-left: 18px;
   }
+  .delete{
+    font-size: 28px;
+    color: #af2727;
+    padding-left: 5px;
+    cursor: pointer;
+  }
 `;
 const FolderName = styled.span`
   font-size: 20px;
   font-weight: 700;
   padding-left: 5px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
 `;
 const SubjectName = styled.span`
   font-size: 18px;

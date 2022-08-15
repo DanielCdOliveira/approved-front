@@ -85,7 +85,7 @@ export default function CreatePlanner({ config, folderId, folder, planner }) {
               </SelectContainer>
               <PlannerItems>
                 {planner.map((plannerDay) => {
-                  return <ShowPlanner index={index} plannerDay={plannerDay} />;
+                  return <ShowPlanner index={index} plannerDay={plannerDay} config={config} URL={URL}/>;
                 })}
               </PlannerItems>
             </WeekDayLi>

@@ -31,7 +31,7 @@ export default function Historic() {
       <TitleContainer>
         <h1>Histórico:</h1>
       </TitleContainer>
-      <HistoricList historic={historic}/>
+      <HistoricList historic={historic} URL={URL} config={config}/>
     </HistoricSection>
   );
 }
