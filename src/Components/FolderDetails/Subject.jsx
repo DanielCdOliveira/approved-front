@@ -7,17 +7,18 @@ import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
 
 import TopicDetails from "./Topic";
+import { useParams } from "react-router-dom";
 
 export default function SubjectDetails({ subject, config, URL }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
-
+  const folderId = parseInt(useParams().id)
   function createNewTopic(e) {
     const data = {
       name: newTopic,
       subjectId: subject.id,
-      isDone: false
+      isDone: false, folderId
     }
     axios
       .post(URL + "/topic", data, config)

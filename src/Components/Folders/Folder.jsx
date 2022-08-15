@@ -86,7 +86,7 @@ export default function Folder({ folder, config,URL }) {
           <div>
             {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
-                <Subject subject={subject} config={config} URL={URL} />
+                <Subject folder={folder} subject={subject} config={config} URL={URL} />
               ))
             ) : (
               <></>

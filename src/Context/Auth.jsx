@@ -6,7 +6,7 @@ import axios from "axios";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
-  const URL = "https://approved-back.herokuapp.com";
+  const URL = "http://localhost:5000";
 
   const [user, setUser] = useState({});
 

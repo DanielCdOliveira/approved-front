@@ -8,7 +8,7 @@ import { BiListPlus } from "react-icons/bi";
 
 import Topic from "./Topic";
 
-export default function Subject({ subject, config, URL }) {
+export default function Subject({folder, subject, config, URL }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
@@ -17,7 +17,8 @@ export default function Subject({ subject, config, URL }) {
     const data = {
       name: newTopic,
       subjectId: subject.id,
-      isDone: false
+      isDone: false,
+      folderId: folder.id
     }
     axios
       .post(URL + "/topic", data, config)
