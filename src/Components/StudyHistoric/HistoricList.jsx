@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import {BsArrowReturnRight} from "react-icons/bs"
-export default function ReviewList({ reviews }) {
-  if (reviews.length > 0) {
+export default function HistoricList({ historic }) {
+  if (historic.length > 0) {
     return (
       <List>
-        {reviews.map((review) => {
+        {historic.map((historicItem) => {
           return (
             <ReviewItem>
-              <FolderName>{review.folderName} - {review.date}</FolderName>
+              <FolderName>{historicItem.folderName} - {historicItem.date}</FolderName>
               <div>
                 <BsArrowReturnRight />
-                <SubjectName>{review.subjectName}:</SubjectName>
-                <TopicName>{review.topicName}</TopicName>
+                <SubjectName>{historicItem.subjectName}:</SubjectName>
+                <TopicName>{historicItem.topicName}</TopicName>
               </div>
             </ReviewItem>
           );
@@ -21,8 +21,7 @@ export default function ReviewList({ reviews }) {
   } else {
     return (
       <List>
-        <h2>Estudos do dia:</h2>
-        <h3>Não há planos de estudo para hoje!</h3>
+        <h3>Não há estudos dessa pasta!</h3>
       </List>
     );
   }
@@ -56,7 +55,17 @@ const TopicName = styled.span`
   font-weight: 400;
 `;
 const List = styled.ul`
-  margin-top: 15px;
-  width: 95%;
-  height: fit-content;
-`;
+    width: 100%;
+    height: 100px;
+    h2{
+        font-size: 22px;
+        font-weight: 700;
+    }
+    h3{
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+        color: #555555;
+    }
+`

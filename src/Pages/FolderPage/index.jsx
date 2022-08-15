@@ -6,6 +6,7 @@ import Header from "../../Components/Header";
 import { PageContainer } from "../../Utils/Styles";
 import Folder from "../../Components/FolderDetails/index.jsx";
 import Planner from "../../Components/Planner/index.jsx"
+import Historic from "../../Components/StudyHistoric";
 
 export default function FolderPage() {
   return (
@@ -14,7 +15,7 @@ export default function FolderPage() {
       <HomeSection>
         <Folder/>
         <Planner/>
-        <Folder/>
+        <Historic/>
       </HomeSection>
     </PageContainer>
   );
