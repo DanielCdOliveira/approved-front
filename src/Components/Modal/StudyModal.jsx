@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
+
 import dayjs from "dayjs";
 Modal.setAppElement(".root");
 
@@ -41,8 +42,10 @@ export default function StudyModal({
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width: "40%",
-      height: "50%",
+      width: "100%",
+      height: "100%",
+      maxWidth:"600px",
+      maxHeight:"600px",
       background: "#171717",
       borderRadius: "50px",
       textAlign: "center",
@@ -342,6 +345,11 @@ const CreateButton = styled.div`
   height: 60px;
   background-color: #5dac5b;
   border-radius: 8px;
+  @media (max-width:550px) {
+    p {
+    font-size: 0.5em;
+  }
+}
 `;
 const CreateReviewButton = styled.div`
   ${(props) =>
@@ -359,6 +367,11 @@ const CreateReviewButton = styled.div`
   height: 60px;
   background-color: #5dac5b;
   border-radius: 8px;
+  @media (max-width:550px) {
+    p {
+    font-size: 0.5em;
+  }
+}
 `;
 const CloseButton = styled.div`
   position: absolute;

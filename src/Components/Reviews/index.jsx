@@ -47,6 +47,9 @@ const Reviewsection = styled.section`
   border: solid 1px #383d3f;
   color: #fff;
   position: relative;
+  @media (max-width: 800px) {
+   width: 100%;
+}
 `;
 const TitleContainer = styled.div`
   width: 90%;

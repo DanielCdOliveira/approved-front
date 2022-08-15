@@ -124,4 +124,9 @@ const MainHeader = styled.header`
     margin-right: 14px;
     font-size: 22px;
   }
+  @media (max-width: 800px) {
+  h2{
+    display: none;
+  }
+}
 `

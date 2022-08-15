@@ -25,4 +25,9 @@ width: 95%;
 display:flex;
 justify-content: space-between;
 align-items: center;
+@media (max-width:800px) {
+    flex-direction: column;
+    margin-top: 80px;
+    margin-bottom: 50px;
+}
 `;

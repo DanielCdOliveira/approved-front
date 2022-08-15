@@ -84,6 +84,10 @@ const FolderSection = styled.section`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
   border: solid 1px #383d3f;
   color: #fff;
+  @media (max-width: 800px) {
+    width: 100%;
+    margin-bottom: 25px;
+}
 `;
 const TitleContainer = styled.div`
   width: 90%;
