@@ -64,7 +64,7 @@ function Register() {
           type="password"
           name=""
           id="password-signup"
-          placeholder="password"
+          placeholder="senha"
           onChange={(e) => setData({ ...data, password: e.target.value })}
         />
         <input
@@ -72,7 +72,7 @@ function Register() {
           type="text"
           name=""
           id="name-signup"
-          placeholder="username"
+          placeholder="nome de usuário"
           onChange={(e) => setData({ ...data, name: e.target.value })}
         />
         <button disabled={disabled} type="submit">

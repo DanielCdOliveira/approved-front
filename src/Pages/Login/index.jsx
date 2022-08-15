@@ -44,7 +44,7 @@ export default function Login() {
           type="password"
           name="password"
           id="password"
-          placeholder="password"
+          placeholder="senha"
           onChange={(e) => setData({ ...data, password: e.target.value })}
         />
         <button disabled={disabled} type="submit">
