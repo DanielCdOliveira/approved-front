@@ -31,7 +31,7 @@ export default function Reviews() {
       <TitleContainer>
         <h1>Revisões:</h1>
       </TitleContainer>
-      <ReviewList reviews={reviews}/>
+      <ReviewList reviews={reviews} URL={URL} config={config}/>
     </Reviewsection>
   );
 }

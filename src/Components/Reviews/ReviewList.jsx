@@ -1,6 +1,18 @@
 import styled from "styled-components";
 import { BsArrowReturnRight } from "react-icons/bs";
-export default function ReviewList({ reviews }) {
+import { IoCloseSharp } from "react-icons/io5";
+import axios from "axios";
+export default function ReviewList({ reviews, URL, config }) {
+  function deleteReview(id){
+    axios
+    .delete(URL + `/review/${id}`, config)
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
   if (reviews.length > 0) {
     return (
       <List>
@@ -8,7 +20,7 @@ export default function ReviewList({ reviews }) {
           return (
             <ReviewItem>
               <FolderName>
-                {review.folderName} - {review.date}
+                {review.folderName} - {review.date}<IoCloseSharp className="delete" onClick={()=>{deleteReview(review.id)}}/>
               </FolderName>
               <div>
                 <BsArrowReturnRight />
@@ -39,12 +51,20 @@ const ReviewItem = styled.li`
     width: auto;
     padding-left: 18px;
   }
+  .delete{
+    font-size: 28px;
+    color: #af2727;
+    padding-left: 5px;
+    cursor: pointer;
+  }
 `;
 const FolderName = styled.span`
   font-size: 20px;
   font-weight: 700;
   padding-left: 5px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
 `;
 const SubjectName = styled.span`
   font-size: 18px;
