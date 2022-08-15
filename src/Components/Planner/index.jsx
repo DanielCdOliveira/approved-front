@@ -36,9 +36,10 @@ export default function Planner() {
       .catch((e) => {
         console.log(e);
       });
-      setCreate(!create);
+      setCreate("load");
   }, [refresh]);
-  if (folder.subjects.length>0) {
+  console.log(create);
+  if (create == "load") {
     return (
       <FolderSection>
         <TitleContainer>
@@ -51,14 +52,7 @@ export default function Planner() {
     );
   } else {
     return(
-      <FolderSection>
-        <TitleContainer>
-          <h1>Planner</h1>
-        </TitleContainer>
-        <PlannerList>
-        <h3>Não há revisões agendadas!</h3>
-        </PlannerList>
-      </FolderSection>
+      <></>
     )
   }
 }

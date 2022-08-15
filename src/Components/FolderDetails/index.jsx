@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-
+import { MdOutlineDelete } from "react-icons/md";
+import { useNavigate } from "react-router";
 import SubjectDetails from "./Subject";
 import { useParams } from "react-router-dom";
 
@@ -13,11 +14,13 @@ export default function Folder() {
   const user = JSON.parse(localStorage.getItem("user"));
   const folderId = parseInt(useParams().id)
   const [newSubject, setNewSubject] = useState("");
+  const [refresh, setRefresh] = useState(false)
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
+  const navigate = useNavigate()
   useEffect(() => {
     axios
       .get(URL + `/folder/${folderId}`, config)
@@ -27,7 +30,7 @@ export default function Folder() {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [refresh]);
   function createNewSubject(e) {
     e.preventDefault()
     const data = {folderId,
@@ -37,6 +40,18 @@ export default function Folder() {
       .post(URL + "/subject", data, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+  function deleteFolder(){
+    axios
+      .delete(URL + `/folder/${folderId}`, config)
+      .then((e) => {
+        console.log(e);
+        navigate("/home")
       })
       .catch((e) => {
         console.log(e);
@@ -45,7 +60,7 @@ export default function Folder() {
   return (
     <FolderSection>
       <TitleContainer>
-        <h1>{folder.name}</h1>
+        <h1>{folder.name} <MdOutlineDelete className="delete-folder" onClick={()=>{deleteFolder()}}/> </h1>
       </TitleContainer>
       <FolderForm onSubmit={createNewSubject}>
         <input
@@ -64,7 +79,7 @@ export default function Folder() {
       <FolderList>
       {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
-                <SubjectDetails subject={subject} config={config} URL={URL} />
+                <SubjectDetails subject={subject} config={config} URL={URL} refresh={refresh} setRefresh={setRefresh} />
               ))
             ) : (
               <></>
@@ -102,6 +117,11 @@ const TitleContainer = styled.div`
     font-weight: 700;
     line-height: 50px;
     color: #fff;
+  }
+  .delete-folder {
+    font-size: 30px;
+    color: #af2727;
+    cursor: pointer;
   }
 `;
 const FolderForm = styled.form`
