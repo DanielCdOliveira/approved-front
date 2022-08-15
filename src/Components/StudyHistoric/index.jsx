@@ -18,14 +18,12 @@ export default function Historic() {
     axios
       .get(URL + `/study/${folderId}`, config)
       .then((e) => {
-        console.log(e.data);
         setHistoric(e.data);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
-  console.log(historic);
   return (
     <HistoricSection>
       <TitleContainer>

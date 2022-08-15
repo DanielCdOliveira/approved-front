@@ -90,7 +90,6 @@ export default function StudyModal({
       topicId:
         folders[folderOption].subjects[subjectOption].topics[topicOption].id,
     };
-    console.log(data);
     axios
       .post(URL + "/study", data, config)
       .then((e) => {
@@ -142,8 +141,6 @@ export default function StudyModal({
     setTopicFinish("");
     setReviewDays(0);
   }
-  console.log(modalOption);
-  console.log(folderOption, subjectOption, topicOption);
   return (
     <Modal
       isOpen={modalIsOpen}

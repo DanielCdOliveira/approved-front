@@ -25,7 +25,6 @@ export default function Reviews() {
         console.log(e);
       });
   }, []);
-  console.log(reviews);
   return (
     <Reviewsection>
       <TitleContainer>

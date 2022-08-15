@@ -31,7 +31,6 @@ export default function CreatePlanner({ config, folderId, folder, planner }) {
     }
   }
   function createPlanner(weekDay) {
-    console.log({ ...option, weekDay });
     axios
       .post(URL + `/planner`, { ...option, weekDay }, config)
       .then((e) => {
@@ -41,7 +40,6 @@ export default function CreatePlanner({ config, folderId, folder, planner }) {
         console.log(e);
       });
   }
-  console.log(planner);
   if(folder.subjects.length){
 
     return (

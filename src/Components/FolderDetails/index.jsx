@@ -15,7 +15,6 @@ export default function Folder() {
   const user = JSON.parse(localStorage.getItem("user"));
   const folderId = parseInt(useParams().id)
   const [newSubject, setNewSubject] = useState("");
-  console.log(folderId);
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -36,7 +35,6 @@ export default function Folder() {
     const data = {folderId,
     name:newSubject,
   isDone:false}
-  console.log(data);
     axios
       .post(URL + "/subject", data, config)
       .then((e) => {

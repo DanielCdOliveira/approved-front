@@ -27,7 +27,6 @@ export default function Folders() {
       });
   }, []);
   function createNewFolder(e) {
-    console.log("entrou");
     e.preventDefault();
     axios
       .post(URL + "/folder", { name: newFolder }, config)
