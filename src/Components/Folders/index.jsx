@@ -11,6 +11,7 @@ export default function Folders() {
   const { URL } = useContext(AuthContext);
   const [folders, setFolders] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [refresh, setRefresh] = useState(false)
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -25,13 +26,14 @@ export default function Folders() {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [refresh]);
   function createNewFolder(e) {
     e.preventDefault();
     axios
       .post(URL + "/folder", { name: newFolder }, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
       })
       .catch((e) => {
         console.log(e);
@@ -60,7 +62,7 @@ export default function Folders() {
       <FolderList>
         {folders.length > 0 ? (
           folders.map((folder) => (
-            <Folder folder={folder} config={config} URL={URL} />
+            <Folder folder={folder} config={config} URL={URL} setRefresh={setRefresh} refresh={refresh}/>
           ))
         ) : (
           <Empty>Você ainda não possui nenhuma pasta de estudos!</Empty>

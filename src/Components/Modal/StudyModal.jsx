@@ -118,17 +118,19 @@ export default function StudyModal({
       subjectId: folders[folderOption].subjects[subjectOption].id,
       topicId:
         folders[folderOption].subjects[subjectOption].topics[topicOption].id,
-        date: reviewDate
+      date: reviewDate,
     };
     axios
-        .post(URL + `/review/`, data, config)
-        .then((e) => {
-          console.log(e);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-        closeModal()
+      .post(URL + `/review/`, data, config)
+      .then((e) => {
+        console.log(e);
+        closeModal();
+        window.location.reload();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+      closeModal();
   }
   function closeModal() {
     closeStudyModal();

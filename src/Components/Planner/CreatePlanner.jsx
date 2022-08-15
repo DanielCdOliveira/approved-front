@@ -6,7 +6,7 @@ import { FaPlus } from "react-icons/fa";
 
 import CreatePlannerInput from "./CreatePlannerInput";
 import ShowPlanner from "./ShowPlanner";
-export default function CreatePlanner({ config, folderId, folder, planner }) {
+export default function CreatePlanner({ config, folderId, folder, planner , setRefresh, refresh}) {
   const [option, setOption] = useState("");
   const { URL } = useContext(AuthContext);
   const week = [
@@ -35,6 +35,7 @@ export default function CreatePlanner({ config, folderId, folder, planner }) {
       .post(URL + `/planner`, { ...option, weekDay }, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
       })
       .catch((e) => {
         console.log(e);
@@ -83,7 +84,7 @@ export default function CreatePlanner({ config, folderId, folder, planner }) {
               </SelectContainer>
               <PlannerItems>
                 {planner.map((plannerDay) => {
-                  return <ShowPlanner index={index} plannerDay={plannerDay} config={config} URL={URL}/>;
+                  return <ShowPlanner index={index} plannerDay={plannerDay} config={config} URL={URL} setRefresh={setRefresh} refresh={refresh}/>;
                 })}
               </PlannerItems>
             </WeekDayLi>

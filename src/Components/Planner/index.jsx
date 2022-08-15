@@ -13,6 +13,7 @@ export default function Planner() {
   const [planner, setPlanner] = useState([]);
   const [create, setCreate] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [refresh, setRefresh] = useState(false)
   const folderId = useParams().id;
   const config = {
     headers: {
@@ -24,7 +25,6 @@ export default function Planner() {
       .get(URL + `/folder/${folderId}`, config)
       .then((e) => {
         setFolder(e.data);
-        
       })
       .catch((e) => {
         console.log(e);
@@ -38,20 +38,29 @@ export default function Planner() {
         console.log(e);
       });
       setCreate(!create);
-  }, []);
-  if (create) {
+  }, [refresh]);
+  if (folder.subjects.length>0) {
     return (
       <FolderSection>
         <TitleContainer>
           <h1>Planner</h1>
         </TitleContainer>
         <PlannerList>
-        <CreatePlanner config={config} folderId={folderId} folder={folder} planner={planner}/>
+        <CreatePlanner config={config} folderId={folderId} folder={folder} planner={planner} setRefresh={setRefresh} refresh={refresh}/>
         </PlannerList>
       </FolderSection>
     );
   } else {
-    return <></>;
+    return(
+      <FolderSection>
+        <TitleContainer>
+          <h1>Planner</h1>
+        </TitleContainer>
+        <PlannerList>
+        <h3>Não há revisões agendadas!</h3>
+        </PlannerList>
+      </FolderSection>
+    )
   }
 }
 
@@ -93,6 +102,13 @@ const PlannerList = styled.ul`
   height: fit-content;
   max-height: 80%;
   overflow-y: auto;
+  h3 {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #555555;
+  }
 `;
 const Buttons = styled.div`
   width: 90%;

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 import Subject from "./Subject.jsx";
 
-export default function Folder({ folder, config,URL }) {
+export default function Folder({ folder, config,URL,setRefresh,refresh }) {
   const [newSubject, setNewSubject] = useState("");
   const [showSubjects, setShowSubjects] = useState(false);
   const [inputFolder, setInputFolder] = useState(false);
@@ -23,6 +23,7 @@ export default function Folder({ folder, config,URL }) {
       .post(URL + "/subject", data, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
       })
       .catch((e) => {
         console.log(e);
@@ -33,6 +34,7 @@ export default function Folder({ folder, config,URL }) {
       .delete(URL + `/folder/${folder.id}`, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
       })
       .catch((e) => {
         console.log(e);
@@ -95,7 +97,7 @@ export default function Folder({ folder, config,URL }) {
           <div>
             {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
-                <Subject folder={folder} subject={subject} config={config} URL={URL} />
+                <Subject folder={folder} subject={subject} config={config} URL={URL} setRefresh={setRefresh} refresh={refresh}/>
               ))
             ) : (
               <></>

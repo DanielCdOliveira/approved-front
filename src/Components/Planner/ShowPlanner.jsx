@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { IoCloseSharp } from "react-icons/io5";
 import { BsArrowReturnRight } from "react-icons/bs";
 import axios from "axios";
-export default function ShowPlanner({ index, plannerDay,config,URL }) {
+export default function ShowPlanner({ index, plannerDay,config,URL,setRefresh, refresh }) {
   function deletePlanner(){
     axios
     .delete(URL + `/planner/${plannerDay.id}`, config)
     .then((e) => {
       console.log(e);
+      setRefresh(!refresh)
     })
     .catch((e) => {
       console.log(e);

@@ -2,13 +2,14 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import {IoCloseSharp} from "react-icons/io5"
-export default function Topic({ topic, config , URL}) {
+export default function Topic({ topic, config , URL, refresh, setRefresh}) {
   const [ShowTopics, setShowTopics] = useState(false);
   function deleteTopic(){
     axios
     .delete(URL + `/topic/${topic.id}`, config)
     .then((e) => {
       console.log(e);
+      setRefresh(!refresh)
     })
     .catch((e) => {
       console.log(e);

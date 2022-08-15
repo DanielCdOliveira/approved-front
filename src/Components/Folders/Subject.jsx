@@ -8,7 +8,7 @@ import { BiListPlus } from "react-icons/bi";
 
 import Topic from "./Topic";
 
-export default function Subject({folder, subject, config, URL }) {
+export default function Subject({folder, subject, config, URL ,setRefresh, refresh}) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
@@ -24,6 +24,7 @@ export default function Subject({folder, subject, config, URL }) {
       .post(URL + "/topic", data, config)
       .then((e) => {
         console.log(e);
+        setRefresh(!refresh)
       })
       .catch((e) => {
         console.log(e);
@@ -34,6 +35,7 @@ export default function Subject({folder, subject, config, URL }) {
     .delete(URL + `/subject/${subject.id}`, config)
     .then((e) => {
       console.log(e);
+      setRefresh(!refresh)
     })
     .catch((e) => {
       console.log(e);
@@ -93,7 +95,7 @@ export default function Subject({folder, subject, config, URL }) {
             <div>
               {subject.topics.length > 0 ? (
                 subject.topics.map((topic) => (
-                  <Topic topic={topic} config={config} URL={URL}/>
+                  <Topic topic={topic} config={config} URL={URL} setRefresh={setRefresh} refresh={refresh}/>
                 ))
               ) : (
                 <></>
