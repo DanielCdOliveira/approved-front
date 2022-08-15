@@ -60,7 +60,8 @@ export default function Folder() {
   return (
     <FolderSection>
       <TitleContainer>
-        <h1>{folder.name} <MdOutlineDelete className="delete-folder" onClick={()=>{deleteFolder()}}/> </h1>
+        <h1>{folder.name}  </h1>
+        <MdOutlineDelete className="delete-folder" onClick={()=>{deleteFolder()}}/>
       </TitleContainer>
       <FolderForm onSubmit={createNewSubject}>
         <input
@@ -117,6 +118,8 @@ const TitleContainer = styled.div`
     font-weight: 700;
     line-height: 50px;
     color: #fff;
+    display: flex;
+    align-items: center;
   }
   .delete-folder {
     font-size: 30px;
