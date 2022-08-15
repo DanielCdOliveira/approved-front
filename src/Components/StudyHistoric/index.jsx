@@ -1,16 +1,14 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-import { FaPlus } from "react-icons/fa";
-
-
+import HistoricList from "./HistoricList";
+import { useParams } from "react-router-dom";
 export default function Historic() {
-  const [newFolder, setNewFolder] = useState("");
   const { URL } = useContext(AuthContext);
-  const [reviews, setReviews] = useState([]);
+  const [historic, setHistoric] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  const folderId = parseInt(useParams().id)
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -18,27 +16,27 @@ export default function Historic() {
   };
   useEffect(() => {
     axios
-      .get(URL + "/folder", config)
+      .get(URL + `/study/${folderId}`, config)
       .then((e) => {
-        setReviews(e.data);
+        console.log(e.data);
+        setHistoric(e.data);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
-
+  console.log(historic);
   return (
-    <Reviewsection>
+    <HistoricSection>
       <TitleContainer>
-        <h1>Histórico</h1>
+        <h1>Histórico:</h1>
       </TitleContainer>
-      <ReviewList>
-      </ReviewList>
-    </Reviewsection>
+      <HistoricList historic={historic}/>
+    </HistoricSection>
   );
 }
 
-const Reviewsection = styled.section`
+const HistoricSection = styled.section`
   width: 30%;
   height: 80vh;
   background-color: #171717;
@@ -61,10 +59,4 @@ const TitleContainer = styled.div`
     line-height: 50px;
     color: #fff;
   }
-`;
-
-const ReviewList = styled.ul`
-  margin-top: 15px;
-  width: 95%;
-  height: fit-content;
 `;
