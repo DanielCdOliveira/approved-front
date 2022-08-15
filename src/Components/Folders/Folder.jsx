@@ -28,7 +28,16 @@ export default function Folder({ folder, config,URL }) {
         console.log(e);
       });
   }
-
+  function deleteFolder(){
+    axios
+      .delete(URL + `/folder/${folder.id}`, config)
+      .then((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
   function showInput() {        
     if (!showSubjects) {
       setShowSubjects(true);
@@ -62,7 +71,7 @@ export default function Folder({ folder, config,URL }) {
           <BiListPlus className="plus-folder"  onClick={() => {
               showInput();
             }}/>
-          <MdOutlineDelete className="delete-folder" />
+          <MdOutlineDelete className="delete-folder" onClick={()=>{deleteFolder()}}/>
         </div>
       </FolderItem>
 

@@ -2,8 +2,18 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import {IoCloseSharp} from "react-icons/io5"
-export default function Topic({ topic, config }) {
+export default function Topic({ topic, config , URL}) {
   const [ShowTopics, setShowTopics] = useState(false);
+  function deleteTopic(){
+    axios
+    .delete(URL + `/topic/${topic.id}`, config)
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
   return (
     <TopicContainer>
       <TopicItem>
@@ -14,7 +24,7 @@ export default function Topic({ topic, config }) {
         >
           {topic.name}
         </h2>
-        <IoCloseSharp/>
+        <IoCloseSharp onClick={()=>{deleteTopic()}}/>
       </TopicItem>
     </TopicContainer>
   );
@@ -42,5 +52,6 @@ const TopicItem = styled.div`
     font-size: 28px;
     color: #af2727;
     padding-left: 5px;
+    cursor: pointer;
   }
 `;

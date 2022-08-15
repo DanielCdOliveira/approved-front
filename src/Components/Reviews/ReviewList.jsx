@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {BsArrowReturnRight} from "react-icons/bs"
+import { BsArrowReturnRight } from "react-icons/bs";
 export default function ReviewList({ reviews }) {
   if (reviews.length > 0) {
     return (
@@ -7,7 +7,9 @@ export default function ReviewList({ reviews }) {
         {reviews.map((review) => {
           return (
             <ReviewItem>
-              <FolderName>{review.folderName} - {review.date}</FolderName>
+              <FolderName>
+                {review.folderName} - {review.date}
+              </FolderName>
               <div>
                 <BsArrowReturnRight />
                 <SubjectName>{review.subjectName}:</SubjectName>
@@ -21,8 +23,7 @@ export default function ReviewList({ reviews }) {
   } else {
     return (
       <List>
-        <h2>Estudos do dia:</h2>
-        <h3>Não há planos de estudo para hoje!</h3>
+        <h3>Não há revisões agendadas!</h3>
       </List>
     );
   }
@@ -56,7 +57,17 @@ const TopicName = styled.span`
   font-weight: 400;
 `;
 const List = styled.ul`
-  margin-top: 15px;
-  width: 95%;
-  height: fit-content;
+  width: 100%;
+  height: 100px;
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  h3 {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #555555;
+  }
 `;

@@ -29,6 +29,16 @@ export default function Subject({folder, subject, config, URL }) {
         console.log(e);
       });
   }
+  function deleteSubject(){
+    axios
+    .delete(URL + `/subject/${subject.id}`, config)
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
   function editSubject() {
     if (!showTopics) {
       setShowTopics(true);
@@ -59,7 +69,7 @@ export default function Subject({folder, subject, config, URL }) {
               editSubject();
             }}
           />
-          <MdOutlineDelete className="delete-subject" />
+          <MdOutlineDelete className="delete-subject" onClick={()=>{deleteSubject()}} />
         </div>
       </SubjectItem>
       {showTopics ? (
@@ -83,7 +93,7 @@ export default function Subject({folder, subject, config, URL }) {
             <div>
               {subject.topics.length > 0 ? (
                 subject.topics.map((topic) => (
-                  <Topic topic={topic} config={config} />
+                  <Topic topic={topic} config={config} URL={URL}/>
                 ))
               ) : (
                 <></>
