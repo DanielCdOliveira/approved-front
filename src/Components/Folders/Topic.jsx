@@ -2,8 +2,16 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import {IoCloseSharp} from "react-icons/io5"
+import DeleteModal from "../Modal/DeleteModal"
 export default function Topic({ topic, config , URL, refresh, setRefresh}) {
   const [ShowTopics, setShowTopics] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
+  }
   function deleteTopic(){
     axios
     .delete(URL + `/topic/${topic.id}`, config)
@@ -25,8 +33,15 @@ export default function Topic({ topic, config , URL, refresh, setRefresh}) {
         >
           {topic.name}
         </h2>
-        <IoCloseSharp onClick={()=>{deleteTopic()}}/>
+        <IoCloseSharp onClick={()=>{openDeleteModal()}}/>
       </TopicItem>
+      <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deleteTopic}
+        textModal={"esse tópico"}
+      />
     </TopicContainer>
   );
 }

@@ -3,11 +3,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
 import dayjs from "dayjs";
-import Modal from "react-modal";
-
 import StudiesList from "../StudiesList";
 import StudyModal from "../Modal/StudyModal";
-Modal.setAppElement(".root");
 
 export default function Today({ folders }) {
   const { URL } = useContext(AuthContext);

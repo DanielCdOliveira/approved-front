@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 import Header from "../../Components/Header";
 import { PageContainer } from "../../Utils/Styles";
@@ -7,12 +8,13 @@ import Planner from "../../Components/Planner/index.jsx"
 import Historic from "../../Components/StudyHistoric";
 
 export default function FolderPage() {
+  const [refreshFromFolder, setRefreshFromFolder]= useState(false)
   return (
     <PageContainer>
       <Header />
       <HomeSection>
-        <Folder/>
-        <Planner/>
+        <Folder setRefreshFromFolder={setRefreshFromFolder} refreshFromFolder={refreshFromFolder}/>
+        <Planner refreshFromFolder={refreshFromFolder}/>
         <Historic/>
       </HomeSection>
     </PageContainer>

@@ -2,14 +2,23 @@ import styled from "styled-components";
 import { useState } from "react";
 import {IoCloseSharp} from "react-icons/io5"
 import axios from "axios";
-export default function TopicDetails({ URL ,topic, config,refresh, setRefresh }) {
+import DeleteModal from "../Modal/DeleteModal"
+export default function TopicDetails({ URL ,topic, config,refresh, setRefresh, setRefreshFromFolder, refreshFromFolder }) {
   const [ShowTopics, setShowTopics] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
+  }
   function deleteTopic(){
     axios
     .delete(URL + `/topic/${topic.id}`, config)
     .then((e) => {
       console.log(e);
       setRefresh(!refresh)
+      setRefreshFromFolder(!refreshFromFolder)
     })
     .catch((e) => {
       console.log(e);
@@ -25,8 +34,15 @@ export default function TopicDetails({ URL ,topic, config,refresh, setRefresh })
         >
           {topic.name}
         </h2>
-        <IoCloseSharp onClick={()=>{deleteTopic()}}/>
+        <IoCloseSharp onClick={()=>{openDeleteModal()}}/>
       </TopicItem>
+      <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deleteTopic}
+        textModal={"esse tópico"}
+      />
     </TopicContainer>
   );
 }
@@ -53,5 +69,6 @@ const TopicItem = styled.div`
     font-size: 28px;
     color: #af2727;
     padding-left: 5px;
+    cursor: pointer;
   }
 `;

@@ -1,17 +1,30 @@
 import styled from "styled-components";
-import {BsArrowReturnRight} from "react-icons/bs"
+import { BsArrowReturnRight } from "react-icons/bs";
 import { IoCloseSharp } from "react-icons/io5";
+import DeleteModal from "../Modal/DeleteModal";
+import { useState } from "react";
 import axios from "axios";
-export default function HistoricList({ historic,URL, config }) {
-  function deleteStudy(id){
+export default function HistoricList({ historic, URL, config, refresh, setRefresh }) {
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [studyId, setStudyId] = useState("")
+
+  function deleteStudy() {
     axios
-    .delete(URL + `/study/${id}`, config)
-    .then((e) => {
-      console.log(e);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .delete(URL + `/study/${studyId}`, config)
+      .then((e) => {
+        console.log(e);
+        setRefresh(!refresh)
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+  function openDeleteModal(id) {
+    setStudyId(id)
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
   }
   if (historic.length > 0) {
     return (
@@ -19,8 +32,16 @@ export default function HistoricList({ historic,URL, config }) {
         {historic.map((historicItem) => {
           return (
             <ReviewItem>
-              <FolderName>{historicItem.folderName} - {historicItem.date}  <IoCloseSharp className="delete" onClick={()=>{deleteStudy(historicItem.id)}}/></FolderName>
-            
+              <FolderName>
+                {historicItem.folderName} - {historicItem.date}
+                <IoCloseSharp
+                  className="delete"
+                  onClick={() => {
+                    openDeleteModal(historicItem.id);
+                  }}
+                />
+              </FolderName>
+
               <div>
                 <BsArrowReturnRight />
                 <SubjectName>{historicItem.subjectName}:</SubjectName>
@@ -29,6 +50,13 @@ export default function HistoricList({ historic,URL, config }) {
             </ReviewItem>
           );
         })}
+        <DeleteModal
+          modalIsOpen={modalIsOpen}
+          closeDeleteModal={closeDeleteModal}
+          openStudyModal={openDeleteModal}
+          functionDelete={deleteStudy}
+          textModal={"esse estudo"}
+        />
       </List>
     );
   } else {
@@ -50,7 +78,7 @@ const ReviewItem = styled.li`
     width: auto;
     padding-left: 18px;
   }
-  .delete{
+  .delete {
     font-size: 28px;
     color: #af2727;
     padding-left: 5px;
@@ -76,17 +104,17 @@ const TopicName = styled.span`
   font-weight: 400;
 `;
 const List = styled.ul`
-    width: 100%;
-    height: 100px;
-    h2{
-        font-size: 22px;
-        font-weight: 700;
-    }
-    h3{
-        margin-top: 20px;
-        font-size: 24px;
-        font-weight: 700;
-        text-align: center;
-        color: #555555;
-    }
-`
+  width: 100%;
+  height: 100px;
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  h3 {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #555555;
+  }
+`;

@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import CreatePlanner from "./CreatePlanner.jsx";
 
-export default function Planner() {
+export default function Planner({refreshFromFolder}) {
   const { URL } = useContext(AuthContext);
   const [folder, setFolder] = useState({ subjects: [] });
   const [planner, setPlanner] = useState([]);
@@ -37,8 +37,7 @@ export default function Planner() {
         console.log(e);
       });
       setCreate("load");
-  }, [refresh]);
-  console.log(create);
+  }, [refresh, refreshFromFolder]);
   if (create == "load") {
     return (
       <FolderSection>

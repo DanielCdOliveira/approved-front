@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { IoCloseSharp } from "react-icons/io5";
+import { useState } from "react";
 import { BsArrowReturnRight } from "react-icons/bs";
 import axios from "axios";
+import DeleteModal from "../Modal/DeleteModal"
 export default function ShowPlanner({ index, plannerDay,config,URL,setRefresh, refresh }) {
+  const [modalIsOpen, setIsOpen] = useState(false);
   function deletePlanner(){
     axios
     .delete(URL + `/planner/${plannerDay.id}`, config)
@@ -14,13 +17,26 @@ export default function ShowPlanner({ index, plannerDay,config,URL,setRefresh, r
       console.log(e);
     });
   }
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
+  }
   if (index === plannerDay.weekDay) {
     return (
       <PlannerItem>
         <BsArrowReturnRight />
         <SubjectName>{plannerDay.subjectName}:</SubjectName>
         <TopicName>{plannerDay.topicName}</TopicName>
-        <IoCloseSharp className="delete" onClick={()=>{deletePlanner()}}/>
+        <IoCloseSharp className="delete" onClick={()=>{openDeleteModal()}}/>
+        <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deletePlanner}
+        textModal={"esse planner"}
+      />
       </PlannerItem>
     );
   } else {

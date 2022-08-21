@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 Modal.setAppElement(".root");
 
 export default function StudyModal({
-  folders,
   closeStudyModal,
   modalIsOpen,
   modalOption,
@@ -25,6 +24,17 @@ export default function StudyModal({
       Authorization: `Bearer ${user.token}`,
     },
   };
+  const [folders, setFolders] = useState([]);
+  useEffect(() => {
+    axios
+      .get(URL + "/folder", config)
+      .then((e) => {
+        setFolders(e.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [modalIsOpen]);
   const customStyles = {
     overlay: {
       position: "fixed",

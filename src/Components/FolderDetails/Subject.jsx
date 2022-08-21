@@ -4,16 +4,27 @@ import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
+import { ThreeDots } from "react-loader-spinner";
+import DeleteModal from "../Modal/DeleteModal"
 
 import TopicDetails from "./Topic";
 import { useParams } from "react-router-dom";
 
-export default function SubjectDetails({ subject, config, URL, refresh, setRefresh }) {
+export default function SubjectDetails({ subject, config, URL, refresh, setRefresh,refreshFromFolder,setRefreshFromFolder }) {
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
   const folderId = parseInt(useParams().id)
-  function createNewTopic(e) {
+  const [disabled, setDisabled] = useState(false)
+  const [modalIsOpen, setIsOpen] = useState(false);
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
+  }
+  function createNewTopic() {
+    setDisabled(true)
     const data = {
       name: newTopic,
       subjectId: subject.id,
@@ -24,9 +35,13 @@ export default function SubjectDetails({ subject, config, URL, refresh, setRefre
       .then((e) => {
         console.log(e);
         setRefresh(!refresh)
+        setDisabled(false)
+        setNewTopic("")
+        setRefreshFromFolder(!refreshFromFolder)
       })
       .catch((e) => {
         console.log(e);
+        setDisabled(false)
       });
   }
   function deleteSubject(){
@@ -35,6 +50,7 @@ export default function SubjectDetails({ subject, config, URL, refresh, setRefre
     .then((e) => {
       console.log(e);
       setRefresh(!refresh)
+      setRefreshFromFolder(!refreshFromFolder)
     })
     .catch((e) => {
       console.log(e);
@@ -76,7 +92,7 @@ export default function SubjectDetails({ subject, config, URL, refresh, setRefre
       {showTopics ? (
         <TopicsList showTopics={showTopics}>
           <div>
-            <TopicForm onSubmit={createNewTopic} inputSubject={inputSubject}>
+            <TopicForm onSubmit={createNewTopic} inputSubject={inputSubject} disabled={disabled}>
               <input
                 type="text"
                 name=""
@@ -87,20 +103,31 @@ export default function SubjectDetails({ subject, config, URL, refresh, setRefre
                 }}
                 value={newTopic}
               />
-              <button className="add-button" onClick={()=>{createNewTopic()}}>
-                <BiPlusCircle />
+              <button disabled={disabled} className="add-button" onClick={()=>{createNewTopic()}}>
+              {disabled ? (
+            <ThreeDots color="#FFF" height={10} width={30} />
+          ) : (
+            <BiPlusCircle />
+          )}
               </button>
             </TopicForm>
             <div>
               {subject.topics.length > 0 ? (
                 subject.topics.map((topic) => (
-                  <TopicDetails URL={URL}topic={topic} config={config} refresh={refresh} setRefresh={setRefresh}/>
+                  <TopicDetails setRefreshFromFolder={setRefreshFromFolder} refreshFromFolder={refreshFromFolder} URL={URL}topic={topic} config={config} refresh={refresh} setRefresh={setRefresh}/>
                 ))
               ) : (
                 <></>
               )}
             </div>
           </div>
+          <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deleteSubject}
+        textModal={"essa matéria"}
+      />
         </TopicsList>
       ) : (
         <></>
@@ -185,7 +212,7 @@ const TopicForm = styled.div`
     border-radius: 0 8px 8px 0;
     border: none;
     border: solid 1px #fff;
-    cursor: pointer;
+    ${(props) => (props.disabled ? "" : "cursor:pointer;")};
     svg {
       font-size: 30px;
       color: #fff;

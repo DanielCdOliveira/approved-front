@@ -3,15 +3,18 @@ import styled from "styled-components";
 import { BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { AuthContext } from "../../Context/Auth";
-
+import { ThreeDots } from "react-loader-spinner";
 import Folder from "./Folder.jsx";
+
 
 export default function Folders() {
   const [newFolder, setNewFolder] = useState("");
   const { URL } = useContext(AuthContext);
   const [folders, setFolders] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
-  const [refresh, setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -28,15 +31,19 @@ export default function Folders() {
       });
   }, [refresh]);
   function createNewFolder(e) {
+    setDisabled(true);
     e.preventDefault();
     axios
       .post(URL + "/folder", { name: newFolder }, config)
       .then((e) => {
         console.log(e);
-        setRefresh(!refresh)
+        setRefresh(!refresh);
+        setDisabled(false);
+        setNewFolder("")
       })
       .catch((e) => {
         console.log(e);
+        setDisabled(false);
       });
   }
 
@@ -45,7 +52,7 @@ export default function Folders() {
       <TitleContainer>
         <h1>Pastas</h1>
       </TitleContainer>
-      <FolderForm onSubmit={createNewFolder}>
+      <FolderForm onSubmit={createNewFolder} disabled={disabled}>
         <input
           type="text"
           name=""
@@ -54,20 +61,32 @@ export default function Folders() {
           onChange={(e) => {
             setNewFolder(e.target.value);
           }}
+          value={newFolder}
         />
-        <button className="add-button" type="submit">
-          <BiPlusCircle />
+        <button disabled={disabled} className="add-button" type="submit">
+          {disabled ? (
+            <ThreeDots color="#FFF" height={10} width={30} />
+          ) : (
+            <BiPlusCircle />
+          )}
         </button>
       </FolderForm>
       <FolderList>
         {folders.length > 0 ? (
           folders.map((folder) => (
-            <Folder folder={folder} config={config} URL={URL} setRefresh={setRefresh} refresh={refresh}/>
+            <Folder
+              folder={folder}
+              config={config}
+              URL={URL}
+              setRefresh={setRefresh}
+              refresh={refresh}
+            />
           ))
         ) : (
           <Empty>Você ainda não possui nenhuma pasta de estudos!</Empty>
         )}
       </FolderList>
+    
     </FolderSection>
   );
 }
@@ -87,7 +106,7 @@ const FolderSection = styled.section`
   @media (max-width: 800px) {
     width: 100%;
     margin-bottom: 25px;
-}
+  }
 `;
 const TitleContainer = styled.div`
   width: 90%;
@@ -130,7 +149,7 @@ const FolderForm = styled.form`
     align-items: center;
     border-radius: 0 8px 8px 0;
     border: none;
-    cursor: pointer;
+    ${(props) => (props.disabled ? "" : "cursor:pointer;")};
     svg {
       font-size: 30px;
       color: #fff;
@@ -148,5 +167,5 @@ const Empty = styled.h2`
   font-size: 24px;
   font-weight: 700;
   text-align: center;
-  color: #555555; 
+  color: #555555;
 `;

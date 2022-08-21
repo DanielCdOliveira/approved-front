@@ -6,16 +6,20 @@ import { TbEdit } from "react-icons/tb";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-
+import { ThreeDots } from "react-loader-spinner";
 import Subject from "./Subject.jsx";
+import DeleteModal from "../Modal/DeleteModal"
 
 export default function Folder({ folder, config,URL,setRefresh,refresh }) {
   const [newSubject, setNewSubject] = useState("");
   const [showSubjects, setShowSubjects] = useState(false);
   const [inputFolder, setInputFolder] = useState(false);
+  const [disabled, setDisabled] = useState(false)
+  const [modalIsOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
   
   function createNewSubject(e) {
+    setDisabled(true)
     const data = {folderId: folder.id,
     name:newSubject,
   isDone:false}
@@ -24,10 +28,19 @@ export default function Folder({ folder, config,URL,setRefresh,refresh }) {
       .then((e) => {
         console.log(e);
         setRefresh(!refresh)
+        setDisabled(false)
+        setNewSubject("")
       })
       .catch((e) => {
         console.log(e);
+        setDisabled(false)
       });
+  }
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
   }
   function deleteFolder(){
     axios
@@ -73,13 +86,13 @@ export default function Folder({ folder, config,URL,setRefresh,refresh }) {
           <BiListPlus className="plus-folder"  onClick={() => {
               showInput();
             }}/>
-          <MdOutlineDelete className="delete-folder" onClick={()=>{deleteFolder()}}/>
+          <MdOutlineDelete className="delete-folder" onClick={()=>{openDeleteModal()}}/>
         </div>
       </FolderItem>
 
       <SubjectsList showSubjects={showSubjects}>
         <div>
-          <SubjectForm inputFolder={inputFolder}>
+          <SubjectForm inputFolder={inputFolder} disabled={disabled} >
             <input
               type="text"
               name=""
@@ -90,8 +103,12 @@ export default function Folder({ folder, config,URL,setRefresh,refresh }) {
               }}
               value={newSubject}
             />
-            <button className="add-button" onClick={()=>{createNewSubject()}}>
-              <BiPlusCircle />
+            <button disabled={disabled} className="add-button" onClick={()=>{createNewSubject()}}>
+            {disabled ? (
+            <ThreeDots color="#FFF" height={10} width={30} />
+          ) : (
+            <BiPlusCircle />
+          )}
             </button>
           </SubjectForm>
           <div>
@@ -105,6 +122,13 @@ export default function Folder({ folder, config,URL,setRefresh,refresh }) {
           </div>
         </div>
       </SubjectsList>
+      <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deleteFolder}
+        textModal={"essa pasta"}
+      />
     </FolderContainer>
   );
 }
@@ -196,7 +220,7 @@ const SubjectForm = styled.div`
     border-radius: 0 8px 8px 0;
     border: none;
     border: solid 1px #fff;
-    cursor: pointer;
+    ${(props) => (props.disabled ? "" : "cursor:pointer;")};
     svg {
       font-size: 30px;
       color: #fff;

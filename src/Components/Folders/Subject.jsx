@@ -4,6 +4,8 @@ import axios from "axios";
 import { BiPlusCircle } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiListPlus } from "react-icons/bi";
+import { ThreeDots } from "react-loader-spinner";
+import DeleteModal from "../Modal/DeleteModal"
 
 import Topic from "./Topic";
 
@@ -11,8 +13,10 @@ export default function Subject({folder, subject, config, URL ,setRefresh, refre
   const [newTopic, setNewTopic] = useState("");
   const [showTopics, setShowTopics] = useState(false);
   const [inputSubject, setInputSubject] = useState(false)
-
+  const [disabled, setDisabled] = useState(false)
+  const [modalIsOpen, setIsOpen] = useState(false);
   function createNewTopic(e) {
+    setDisabled(true)
     const data = {
       name: newTopic,
       subjectId: subject.id,
@@ -24,10 +28,19 @@ export default function Subject({folder, subject, config, URL ,setRefresh, refre
       .then((e) => {
         console.log(e);
         setRefresh(!refresh)
+        setDisabled(false)
+        setNewTopic("")
       })
       .catch((e) => {
         console.log(e);
+        setDisabled(false)
       });
+  }
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
   }
   function deleteSubject(){
     axios
@@ -70,13 +83,13 @@ export default function Subject({folder, subject, config, URL ,setRefresh, refre
               editSubject();
             }}
           />
-          <MdOutlineDelete className="delete-subject" onClick={()=>{deleteSubject()}} />
+          <MdOutlineDelete className="delete-subject" onClick={()=>{openDeleteModal()}} />
         </div>
       </SubjectItem>
       {showTopics ? (
         <TopicsList showTopics={showTopics}>
           <div>
-            <TopicForm onSubmit={createNewTopic} inputSubject={inputSubject}>
+            <TopicForm onSubmit={createNewTopic} inputSubject={inputSubject} disabled={disabled}>
               <input
                 type="text"
                 name=""
@@ -87,8 +100,12 @@ export default function Subject({folder, subject, config, URL ,setRefresh, refre
                 }}
                 value={newTopic}
               />
-              <button className="add-button" onClick={()=>{createNewTopic()}}>
-                <BiPlusCircle />
+              <button disabled={disabled} className="add-button" onClick={()=>{createNewTopic()}}>
+              {disabled ? (
+            <ThreeDots color="#FFF" height={10} width={30} />
+          ) : (
+            <BiPlusCircle />
+          )}
               </button>
             </TopicForm>
             <div>
@@ -105,6 +122,13 @@ export default function Subject({folder, subject, config, URL ,setRefresh, refre
       ) : (
         <></>
       )}
+      <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deleteSubject}
+        textModal={"essa matéria"}
+      />
     </SubjectContainer>
   );
 }

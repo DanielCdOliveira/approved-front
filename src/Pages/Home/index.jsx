@@ -34,7 +34,7 @@ export default function Home() {
       <Header />
       <HomeSection>
         <Folders></Folders>
-        <Today folders={folders}></Today>
+        <Today></Today>
         <Reviews></Reviews>
       </HomeSection>
     </PageContainer>

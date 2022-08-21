@@ -9,6 +9,7 @@ export default function Historic() {
   const [historic, setHistoric] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const folderId = parseInt(useParams().id)
+  const [refresh, setRefresh]= useState(false)
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -23,13 +24,13 @@ export default function Historic() {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [refresh]);
   return (
     <HistoricSection>
       <TitleContainer>
         <h1>Histórico:</h1>
       </TitleContainer>
-      <HistoricList historic={historic} URL={URL} config={config}/>
+      <HistoricList refresh={refresh} setRefresh={setRefresh} historic={historic} URL={URL} config={config}/>
     </HistoricSection>
   );
 }

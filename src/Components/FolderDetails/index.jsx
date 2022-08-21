@@ -7,19 +7,29 @@ import { MdOutlineDelete } from "react-icons/md";
 import { useNavigate } from "react-router";
 import SubjectDetails from "./Subject";
 import { useParams } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
+import DeleteModal from "../Modal/DeleteModal"
 
-export default function Folder() {
+export default function Folder({refreshFromFolder,setRefreshFromFolder}) {
   const { URL } = useContext(AuthContext);
   const [folder, setFolder] = useState({subjects:[]});
   const user = JSON.parse(localStorage.getItem("user"));
   const folderId = parseInt(useParams().id)
   const [newSubject, setNewSubject] = useState("");
   const [refresh, setRefresh] = useState(false)
+  const [disabled, setDisabled] = useState(false)
+  const [modalIsOpen, setIsOpen] = useState(false);
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
+  function openDeleteModal() {
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
+  }
   const navigate = useNavigate()
   useEffect(() => {
     axios
@@ -32,6 +42,7 @@ export default function Folder() {
       });
   }, [refresh]);
   function createNewSubject(e) {
+    setDisabled(true)
     e.preventDefault()
     const data = {folderId,
     name:newSubject,
@@ -41,9 +52,12 @@ export default function Folder() {
       .then((e) => {
         console.log(e);
         setRefresh(!refresh)
+        setDisabled(false)
+        setNewSubject("")
       })
       .catch((e) => {
         console.log(e);
+        setDisabled(false)
       });
   }
   function deleteFolder(){
@@ -61,9 +75,9 @@ export default function Folder() {
     <FolderSection>
       <TitleContainer>
         <h1>{folder.name}  </h1>
-        <MdOutlineDelete className="delete-folder" onClick={()=>{deleteFolder()}}/>
+        <MdOutlineDelete className="delete-folder" onClick={()=>{openDeleteModal()}}/>
       </TitleContainer>
-      <FolderForm onSubmit={createNewSubject}>
+      <FolderForm onSubmit={createNewSubject} disabled={disabled}>
         <input
           type="text"
           name=""
@@ -72,20 +86,32 @@ export default function Folder() {
           onChange={(e) => {
             setNewSubject(e.target.value);
           }}
+          value={newSubject}
         />
-        <button className="add-button" type="submit">
-          <BiPlusCircle />
+        <button disabled={disabled} className="add-button" type="submit">
+        {disabled ? (
+            <ThreeDots color="#FFF" height={10} width={30} />
+          ) : (
+            <BiPlusCircle />
+          )}
         </button>
       </FolderForm>
       <FolderList>
       {folder.subjects.length > 0 ? (
               folder.subjects.map((subject) => (
-                <SubjectDetails subject={subject} config={config} URL={URL} refresh={refresh} setRefresh={setRefresh} />
+                <SubjectDetails setRefreshFromFolder={setRefreshFromFolder} refreshFromFolder={refreshFromFolder} subject={subject} config={config} URL={URL} refresh={refresh} setRefresh={setRefresh} />
               ))
             ) : (
               <></>
             )}
       </FolderList>
+      <DeleteModal
+        modalIsOpen={modalIsOpen}
+        closeDeleteModal={closeDeleteModal}
+        openStudyModal={openDeleteModal}
+        functionDelete={deleteFolder}
+        textModal={"essa pasta"}
+      />
     </FolderSection>
   );
 }
@@ -158,7 +184,7 @@ const FolderForm = styled.form`
     align-items: center;
     border-radius: 0 8px 8px 0;
     border: none;
-    cursor: pointer;
+    ${(props) => (props.disabled ? "" : "cursor:pointer;")};
     svg {
       font-size: 30px;
       color: #fff;

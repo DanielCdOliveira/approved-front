@@ -2,17 +2,30 @@ import styled from "styled-components";
 import { BsArrowReturnRight } from "react-icons/bs";
 import { IoCloseSharp } from "react-icons/io5";
 import axios from "axios";
-export default function ReviewList({ reviews, URL, config }) {
-  function deleteReview(id){
+import DeleteModal from "../Modal/DeleteModal";
+import { useState } from "react";
+export default function ReviewList({ reviews, URL, config, refresh, setRefresh }) {
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [reviewId, setReviewId] = useState("");
+  function deleteReview(reviewId) {
     axios
-    .delete(URL + `/review/${id}`, config)
-    .then((e) => {
-      console.log(e);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .delete(URL + `/review/${reviewId}`, config)
+      .then((e) => {
+        console.log(e);
+        setRefresh(!refresh)
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
+  function openDeleteModal(id) {
+    setReviewId(id)
+    setIsOpen(true);
+  }
+  function closeDeleteModal() {
+    setIsOpen(false);
+  }
+  console.log(reviewId);
   if (reviews.length > 0) {
     return (
       <List>
@@ -20,7 +33,13 @@ export default function ReviewList({ reviews, URL, config }) {
           return (
             <ReviewItem>
               <FolderName>
-                {review.folderName} - {review.date}<IoCloseSharp className="delete" onClick={()=>{deleteReview(review.id)}}/>
+                {review.folderName} - {review.date}
+                <IoCloseSharp
+                  className="delete"
+                  onClick={() => {
+                    openDeleteModal(review.id);
+                  }}
+                />
               </FolderName>
               <div>
                 <BsArrowReturnRight />
@@ -29,7 +48,14 @@ export default function ReviewList({ reviews, URL, config }) {
               </div>
             </ReviewItem>
           );
-        })}
+        })}{" "}
+        <DeleteModal
+          modalIsOpen={modalIsOpen}
+          closeDeleteModal={closeDeleteModal}
+          openStudyModal={openDeleteModal}
+          functionDelete={()=>{deleteReview(reviewId)}}
+          textModal={"essa revisão"}
+        />
       </List>
     );
   } else {
@@ -51,7 +77,7 @@ const ReviewItem = styled.li`
     width: auto;
     padding-left: 18px;
   }
-  .delete{
+  .delete {
     font-size: 28px;
     color: #af2727;
     padding-left: 5px;

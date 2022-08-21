@@ -9,6 +9,7 @@ export default function Reviews() {
   const { URL } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [refresh, setRefresh] = useState(false)
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -23,13 +24,13 @@ export default function Reviews() {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [refresh]);
   return (
     <Reviewsection>
       <TitleContainer>
         <h1>Revisões:</h1>
       </TitleContainer>
-      <ReviewList reviews={reviews} URL={URL} config={config}/>
+      <ReviewList refresh={refresh} setRefresh={setRefresh} reviews={reviews} URL={URL} config={config}/>
     </Reviewsection>
   );
 }
