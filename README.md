@@ -1,70 +1,296 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center"><img style = "width:100%;"src="https://i.imgur.com/BhN3Pll.png"></img></div>
+<hr>
+<h2 align=center>Approved (authoring project)</h2>
+<h3 align=center>Web development Project</h3>
+<hr>
+<h4 align=center>Have you ever gotten lost trying to organize yourself when studying?</h4>
+<h4 align=center>Approved is a study planning application</h4>
 
-## Available Scripts
+<hr>
 
-In the project directory, you can run:
+## In it you can:
 
-### `npm start`
+- Group material and topics by folders;
+- Create a weekly study planner
+- Save the contents studied on the day
+- Mark topics as complete
+- Schedule topic review
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## :computer: Technologies and Concepts
 
-### `npm test`
+- REST APIs
+- JWTs
+- Node.js
+- TypeScript
+- postgresql
+- Prism
+- Jest
+- Heroku
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## :rocket: Deploy
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [Deploy on Heroku (backend)](https://approved-back.herokuapp.com)
+- [Deploy on Vercel (front-end)](https://approved-front.vercel.app/)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## :rocket: Routes
 
-### `npm run eject`
+### Authentication routes
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```yml
+POST /signup
+    - Route to register a new user
+    - headers: {}
+    - body:{
+        "email": "lorem@gmail.com",
+        "password": "loremipsum",
+        "name": "loremipsum"
+}
+```
+```yml
+POST /sign-in
+    - Route to login
+    - headers: {}
+    - body: {
+    "email": "lorem@gmail.com",
+    "password": "loremipsum"
+    }
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Folder routes
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```yml
+POST /folder (authenticated)
+    - Route to create study folder
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {
+        "name": "Folder name"
+}
+```
+```yml
+GET /folder (authenticated)
+    - Route to list user folders
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+GET /folder/:id (authenticated)
+    - Route to list folder (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+DELETE /folder/:id (authenticated)
+    - Route to delete folder (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Material routes
 
-## Learn More
+```yml
+POST /subject (authenticated)
+    - Route to create matter
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {
+        "name": "Subject name",
+        "folderId": <folder id (Int)>,
+        "isDone": boolean
+}
+```
+```yml
+DELETE /subject/:id (authenticated)
+    - Route to delete matter (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+### Topic routes
+```yml
+POST /topic (authenticated)
+    - Route to create matter
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {
+        "name": "Subject name",
+        "folderId": <folder id (Int)>,
+        "subjectId": <subject id (Int)>
+        "isDone": boolean
+}
+```
+```yml
+POST /topic/:id (authenticated)
+    - Route to complete topic
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+DELETE /topic/:id (authenticated)
+    - Route to delete matter (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Study routes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```yml
+POST /study (authenticated)
+    - Route to create matter
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {
+        "folderId": <folder id (Int)>,
+        "subjectId": <subject id (Int)>,
+        "topicId": <topic id (Int)>
+}
+```
+```yml
+GET /study/:id (authenticated)
+    - Route to list all studies in a folder by their id
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+DELETE /study/:id (authenticated)
+    - Route to delete study (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-### Code Splitting
+### Planner routes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```yml
+POST /planner (authenticated)
+    - Route to create planner
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {
+        "folderId": <folder id (Int)>,
+        "subjectId": <subject id (Int)>,
+        "topicId": <topic id (Int)>,
+        "weekDay": <day of the week (Int, 0=Sunday)>
+}
+```
+```yml
+GET /planner/:id (authenticated)
+    - Route to list all planner in a folder by their id
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+GET /planner (authenticated)
+    - Route to list all planner of a user by their token
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+DELETE /planner/:id (authenticated)
+    - Route to delete planners (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-### Analyzing the Bundle Size
+### Revision routes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```yml
+POST /review (authenticated)
+    - Route to create review
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {
+        "folderId": <folder id (Int)>,
+        "subjectId": <subject id (Int)>,
+        "topicId": <topic id (Int)>,
+        "date": <date DD/MM/YYYY>
+}
+```
+```yml
+GET /review (authenticated)
+    - Route to list all revisions of a user by their token
+    - headers: {"Authorization": "Bearer $token" }
+    - body: {}
+```
+```yml
+DELETE /review/:id (authenticated)
+    - Route to delete revision (by id)
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🏁 Running the application
 
-### Advanced Configuration
+Make sure you have the latest stable version of [Node.js](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/) running locally.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+First, clone this repository on your machine:
 
-### Deployment
+```
+git clone https://github.com/DanielCdOliveira/approved-back.git
+```
+or
+```
+git clone git@github.com:DanielCdOliveira/approved-back.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Backend
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+npm install
+```
+
+Once the process is finished, just start the server:
+
+> To upload the application to the development environment:
+
+```
+npm run dev
+```
+
+> To upload the integration testing application:
+
+- it is necessary to create a **.env.test** file to run this command
+
+```
+npm run test
+```
+
+> To upload the unit tests application:
+
+- it is necessary to create a **.env.test** file to run this command
+
+```
+npm run test:unit
+```
+
+> To upload the application for testing with cypress(front-end):
+
+- it is necessary to create a **.env.test** file to run this command
+
+```
+npm run dev:test
+```
+
+> To run the project build with typescript:
+
+```
+npm run build
+```
+
+> To upload the application after the build:
+
+```
+npm run start
+```
+
+## Front end
+
+
+
+## Access the back-end repository[ here](https://github.com/DanielCdOliveira/approved-back)
+
+## Thunder client
+
+- For manual tests it is possible to import the file **thunder-collection_approved.json**
